@@ -37,7 +37,7 @@ public sealed class LawCartridgeSystem : EntitySystem
         var chassis = args.ChassisEnt;
         if (!TryComp<SiliconLawBoundComponent>(chassis, out _))
             return;
-        _siliconLawSystem.SetLaws(component.Lawset.Laws, chassis, component.LawUploadSound);
+        _siliconLawSystem.SetLaws(new(component.Lawset.Laws), chassis, component.LawUploadSound);
     }
 
     private void OnCartridgeUninstalled(EntityUid uid, LawCartridgeComponent component, LawCartridgeUninstalledEvent args)
@@ -45,7 +45,7 @@ public sealed class LawCartridgeSystem : EntitySystem
         var chassis = args.ChassisEnt;
         if (!TryComp<SiliconLawBoundComponent>(chassis, out var lawComp))
             return;
-        component.Lawset = _siliconLawSystem.GetLaws(chassis, lawComp);
+        component.Lawset = _siliconLawSystem.GetLaws(chassis, lawComp).Clone();
         _siliconLawSystem.SetLaws([], chassis);
 
     }
@@ -58,7 +58,7 @@ public sealed class LawCartridgeSystem : EntitySystem
         if (!TryComp<SiliconLawBoundComponent>(chassis, out var lawComp))
             return;
 
-        component.Lawset = _siliconLawSystem.GetLaws(chassis, lawComp);
+        component.Lawset = _siliconLawSystem.GetLaws(chassis, lawComp).Clone();
 
         if (TryComp<LawCartridgeComponent>(replacement, out var newCartridge))
             _siliconLawSystem.SetLaws(newCartridge.Lawset.Laws, chassis, newCartridge.LawUploadSound);

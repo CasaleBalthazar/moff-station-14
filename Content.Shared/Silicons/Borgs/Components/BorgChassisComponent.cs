@@ -108,6 +108,28 @@ public sealed partial class BorgChassisComponent : Component
     public int ModuleCount => ModuleContainer.ContainedEntities.Count;
     #endregion
 
+    /* Moffstation addition */
+    #region Law Cartridge
+    /// <summary>
+    /// The ID for the law cartridge container
+    /// </summary>
+    [DataField]
+    public string LawCartridgeContainerId = "law_cartridge";
+
+    /// <summary>
+    /// The law cartridge container
+    /// </summary>
+    [ViewVariables]
+    public ContainerSlot LawCartridgeContainer = default!;
+
+    /// <summary>
+    /// what law cartridge is currently installed ?
+    /// </summary>
+    [ViewVariables]
+    public EntityUid? LawCartEntity => LawCartridgeContainer?.ContainedEntity;
+    #endregion
+
+
     /// <summary>
     /// The currently selected module.
     /// </summary>

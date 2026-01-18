@@ -1,3 +1,4 @@
+using Content.Shared._Moffstation.Robotics.Components;
 using Content.Shared.Access.Systems;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
@@ -124,6 +125,7 @@ public abstract partial class SharedBorgSystem : EntitySystem
 
         chassis.Comp.BrainContainer = _container.EnsureContainer<ContainerSlot>(chassis.Owner, chassis.Comp.BrainContainerId, containerManager);
         chassis.Comp.ModuleContainer = _container.EnsureContainer<Container>(chassis.Owner, chassis.Comp.ModuleContainerId, containerManager);
+        chassis.Comp.LawCartridgeContainer = _container.EnsureContainer<ContainerSlot>(chassis.Owner, chassis.Comp.LawCartridgeContainerId, containerManager);
     }
 
     private void OnMapInit(Entity<BorgChassisComponent> chassis, ref MapInitEvent args)
@@ -225,6 +227,7 @@ public abstract partial class SharedBorgSystem : EntitySystem
         var used = args.Used;
         TryComp<BorgBrainComponent>(used, out var brain);
         TryComp<BorgModuleComponent>(used, out var module);
+        TryComp<LawCartridgeComponent>(used, out var cartridge);
 
         if (TryComp<WiresPanelComponent>(chassis, out var panel) && !panel.Open)
         {
@@ -258,6 +261,35 @@ public abstract partial class SharedBorgSystem : EntitySystem
             _adminLog.Add(LogType.Action, LogImpact.Low,
                 $"{args.User} installed module {used} into borg {chassis.Owner}");
             args.Handled = true;
+        }
+
+        if (cartridge != null)
+        {
+            if (chassis.Comp.LawCartEntity is {} oldCartridge) // replace the current cartridge with this one.
+            {
+                _container.Remove(oldCartridge, chassis.Comp.LawCartridgeContainer);
+                _container.Insert(used, chassis.Comp.LawCartridgeContainer);
+                _hands.TryPickupAnyHand(args.User, oldCartridge);
+
+
+                var ev = new LawCartridgeReplacedEvent(chassis, used);
+                RaiseLocalEvent(oldCartridge, ref ev);
+                _adminLog.Add(LogType.Action, LogImpact.Medium,
+                    $"{args.User} replaced law cartridge {oldCartridge} by {used} into borg {chassis.Owner}");
+                args.Handled = true;
+                return;
+            }
+            else // install the cartridge.
+            {
+                _container.Insert(used, chassis.Comp.LawCartridgeContainer);
+
+                var ev = new LawCartridgeInstalledEvent(chassis);
+                RaiseLocalEvent(used, ref ev);
+                _adminLog.Add(LogType.Action, LogImpact.Medium,
+                    $"{args.User} installed law cartridge {used} into borg {chassis.Owner}");
+                args.Handled = true;
+                return;
+            }
         }
     }
 

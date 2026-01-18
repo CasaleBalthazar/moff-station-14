@@ -21,6 +21,11 @@ public sealed class BorgBoundUserInterface : BoundUserInterface
         _menu = this.CreateWindow<BorgMenu>();
         _menu.SetEntity(Owner);
 
+        _menu.LawCartButtonPressed += () =>
+        {
+            SendPredictedMessage(new BorgEjectLawCartBuiMessage());
+        };
+
         _menu.BrainButtonPressed += () =>
         {
             SendPredictedMessage(new BorgEjectBrainBuiMessage());
@@ -47,5 +52,6 @@ public sealed class BorgBoundUserInterface : BoundUserInterface
         _menu?.UpdateBatteryButton();
         _menu?.UpdateBrainButton();
         _menu?.UpdateModulePanel();
+        _menu?.UpdateLawCartridgeButton();
     }
 }

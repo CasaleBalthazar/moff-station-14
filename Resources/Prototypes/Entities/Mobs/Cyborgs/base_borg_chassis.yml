@@ -120,6 +120,7 @@
     group: Silicon
   - type: ContainerContainer
     containers:
+      law_cartridge: !type:ContainerSlot { } # addition from Moffstation
       borg_brain: !type:ContainerSlot { }
       cell_slot: !type:ContainerSlot { }
       borg_module: !type:Container { }
@@ -192,6 +193,7 @@
         - borg_brain
         - borg_module
         - cell_slot
+        - law_cartridge # addition from Moffstation
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
   - type: HandheldLight

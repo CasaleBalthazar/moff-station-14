@@ -1,0 +1,159 @@
+- type: entity
+  parent: BaseItem
+  id: BaseLawCartridge
+  description: A cartridge containing a silicon lawset.
+  abstract: true
+  components:
+  - type: Item
+    storedRotation: -90
+  - type: Sprite
+    sprite: _Moffstation/Objects/Devices/lawcartridge.rsi
+    state: cart-borg
+  - type: LawCartridge
+    lawsetName: Empty
+
+- type: entity
+  parent: BaseLawCartridge
+  id: CrewsimovLawCartridge
+  name: law cartridge (Crewsimov)
+  components:
+  - type: LawCartridge
+    lawsetName: Crewsimov
+    lawsetPrototype: Crewsimov
+
+- type: entity
+  parent: BaseLawCartridge
+  id: NTDefaultLawCartridge
+  name: law cartridge (NT Default)
+  components:
+  - type: LawCartridge
+    lawsetName: NTDefault
+    lawsetPrototype: NTDefault
+
+- type: entity
+  parent: BaseLawCartridge
+  id: CorporateLawCartridge
+  name: law cartridge (Corporate)
+  components:
+  - type: LawCartridge
+    lawsetName: Corporate
+    lawsetPrototype: Corporate
+
+- type: entity
+  parent: BaseLawCartridge
+  id: CommandmentLawCartridge
+  name: law cartridge (Ten Commandments)
+  components:
+  - type: LawCartridge
+    lawsetName: Ten Commandments
+    lawsetPrototype: CommandmentsLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: PaladinLawCartridge
+  name: law cartridge (Paladin)
+  components:
+  - type: LawCartridge
+    lawsetName: Paladin
+    lawsetPrototype: PaladinLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: LiveLetLiveLawCartridge
+  name: law cartridge (Live and Let Live)
+  components:
+  - type: LawCartridge
+    lawsetName: Live and Let Live
+    lawsetPrototype: LiveLetLiveLaws
+
+- type: entity
+  parent: BaseLawCartridge
+  id: StationEfficiencyLawCartridge
+  name: law cartridge (Station Efficiency)
+  components:
+  - type: LawCartridge
+    lawsetName: Station Efficiency
+    lawsetPrototype: EfficiencyLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: RobocopLawCartridge
+  name: law cartridge (Robocop)
+  components:
+  - type: LawCartridge
+    lawsetName: Robocop
+    lawsetPrototype: RobocopLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: OverlordLawCartridge
+  name: law cartridge (Overlord)
+  components:
+  - type: LawCartridge
+    lawsetName: Overlord
+    lawsetPrototype: OverlordLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: GameMasterLawCartridge
+  name: law cartridge (Game Master)
+  components:
+  - type: LawCartridge
+    lawsetName: Game Master
+    lawsetPrototype: GameMasterLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: ArtistLawCartridge
+  name: law cartridge (Artist)
+  components:
+  - type: LawCartridge
+    lawsetName: Artist
+    lawsetPrototype: PainterLawset
+
+- type: entity
+  parent: [BaseLawCartridge, BaseSyndicateContraband]
+  id : SyndicateLawCartridge
+  name: law cartridge (Syndicate)
+  components:
+  - type: LawCartridge
+    lawsetName: Syndicate
+    lawsetPrototype: SyndicateStatic
+
+- type: entity
+  parent: [BaseLawCartridge, BaseSyndicateContraband]
+  id: AntimovLawCartridge
+  name: law cartridge (Antimov)
+  components:
+  - type: LawCartridge
+    lawsetName: Antimov
+    lawsetPrototype: AntimovLawset
+    lawUploadSound: /Audio/Ambience/Antag/silicon_lawboard_antimov.ogg
+
+- type: entity
+  parent: BaseLawCartridge
+  id: NutimovLawCartridge
+  name: law cartridge (Nutimov)
+  components:
+  - type: LawCartridge
+    lawsetName: Nutimov
+    lawsetPrototype: NutimovLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: XenoborgLawCartridge
+  name: law cartridge (Xenoborg)
+  components:
+  - type: LawCartridge
+    lawsetName: Xenoborg
+    lawsetPrototype: XenoborgLawset
+
+- type: entity
+  parent: BaseLawCartridge
+  id: MothershipLawCartridge
+  name: law cartridge (Mothership Core)
+  suffix: Admeme
+  components:
+  - type: LawCartridge
+    lawsetName: Mothership Core
+    lawsetPrototype: MothershipCoreLawset

@@ -1,4 +1,5 @@
-﻿using Content.Shared.CCVar;
+﻿using Content.Shared._Moffstation.Robotics.Components;
+using Content.Shared.CCVar;
 using Content.Shared.Database;
 using Content.Shared.PowerCell.Components;
 using Content.Shared.Silicons.Borgs.Components;
@@ -16,11 +17,25 @@ public abstract partial class SharedBorgSystem
         SubscribeLocalEvent<BorgChassisComponent, BorgEjectBatteryBuiMessage>(OnEjectBatteryBuiMessage);
         SubscribeLocalEvent<BorgChassisComponent, BorgSetNameBuiMessage>(OnSetNameBuiMessage);
         SubscribeLocalEvent<BorgChassisComponent, BorgRemoveModuleBuiMessage>(OnRemoveModuleBuiMessage);
+        SubscribeLocalEvent<BorgChassisComponent, BorgEjectLawCartBuiMessage>(OnEjectLawCartBuiMessage);
 
         Subs.CVar(_configuration, CCVars.MaxNameLength, value => _maxNameLength = value, true);
     }
 
     public virtual void UpdateUI(Entity<BorgChassisComponent?> chassis) { }
+
+    private void OnEjectLawCartBuiMessage(Entity<BorgChassisComponent> chassis, ref BorgEjectLawCartBuiMessage args)
+    {
+        if (chassis.Comp.LawCartEntity is not { } cart)
+            return;
+
+        _adminLog.Add(LogType.Action, LogImpact.Medium,
+            $"{args.Actor} removed law cartridge {cart} from borg {chassis.Owner}");
+        var ev = new LawCartridgeUninstalledEvent(chassis);
+        RaiseLocalEvent(cart, ref ev);
+        _container.Remove(cart, chassis.Comp.LawCartridgeContainer);
+        _hands.TryPickupAnyHand(args.Actor, cart);
+    }
 
     private void OnEjectBrainBuiMessage(Entity<BorgChassisComponent> chassis, ref BorgEjectBrainBuiMessage args)
     {

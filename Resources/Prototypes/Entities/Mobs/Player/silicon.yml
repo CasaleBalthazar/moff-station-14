@@ -532,6 +532,8 @@
     containers:
       borg_brain:
       - PositronicBrain
+      law_cartridge: # addition from Moffstation
+        - CrewsimovLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:
@@ -555,6 +557,8 @@
         - BorgModuleOperative
         - BorgModuleL6C
         - BorgModuleDoubleEsword
+      law_cartridge:
+        - SyndicateLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:
@@ -641,6 +645,8 @@
       - BorgModuleConstruction
       - BorgModuleRCD
       - BorgModuleCable
+      law_cartridge:
+      - CrewsimovLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:
@@ -676,6 +682,8 @@
       borg_module:
         - BorgModuleTool
         - BorgModuleFireExtinguisher
+      law_cartridge:
+      - CrewsimovLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:
@@ -713,6 +721,8 @@
       - BorgModuleFireExtinguisher
       - BorgModuleCleaning
       - BorgModuleCustodial
+      law_cartridge:
+      - CrewsimovLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:
@@ -751,6 +761,8 @@
       - BorgModuleChemical
       - BorgModuleTopicals
       - BorgModuleRescue
+      law_cartridge:
+      - CrewsimovLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:
@@ -788,6 +800,8 @@
       - BorgModuleMining
       - BorgModuleTraversal
       - BorgModuleAppraisal
+      law_cartridge:
+      - CrewsimovLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:
@@ -824,6 +838,8 @@
       - BorgModuleOperative
       - BorgModuleC20r
       - BorgModuleEsword
+      law_cartridge:
+      - SyndicateLawCartridge
   - type: ItemSlots
     slots:
       cell_slot:

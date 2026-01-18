@@ -34,6 +34,9 @@
             <Button HorizontalExpand="True" Name="BrainButton" ToggleMode="False" Margin="0" MinHeight="40" StyleClasses="OpenLeft">
                 <SpriteView Name="BrainView" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Button>
+            <Button HorizontalExpand="True" Name="CartButton" ToggleMode="False" Margin="0" MinHeight="40" StyleClasses="OpenLeft">
+                <SpriteView Name="CartView" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Button>
         </BoxContainer>
         <customControls:VSeparator/>
         <BoxContainer Orientation="Vertical" VerticalExpand="True" HorizontalExpand="True" Margin="15 10 15 15">

@@ -23,6 +23,7 @@ public sealed partial class BorgMenu : FancyWindow
     private readonly PowerCellSystem _powerCell;
     private readonly SharedBatterySystem _battery;
 
+    public Action? LawCartButtonPressed;
     public Action? BrainButtonPressed;
     public Action? EjectBatteryButtonPressed;
     public Action<string>? NameChanged;
@@ -50,6 +51,7 @@ public sealed partial class BorgMenu : FancyWindow
 
         _lastValidName = NameLineEdit.Text;
 
+        CartButton.OnPressed += _ => LawCartButtonPressed?.Invoke();
         EjectBatteryButton.OnPressed += _ => EjectBatteryButtonPressed?.Invoke();
         BrainButton.OnPressed += _ => BrainButtonPressed?.Invoke();
 
@@ -79,6 +81,7 @@ public sealed partial class BorgMenu : FancyWindow
         UpdateBatteryButton();
         UpdateBrainButton();
         UpdateModulePanel();
+        UpdateLawCartridgeButton();
     }
 
     protected override void FrameUpdate(FrameEventArgs args)
@@ -96,6 +99,25 @@ public sealed partial class BorgMenu : FancyWindow
         ChargeBar.Value = chargeFraction;
         ChargeLabel.Text = Loc.GetString("borg-ui-charge-label",
             ("charge", (int)MathF.Round(chargeFraction * 100)));
+    }
+
+    public void UpdateLawCartridgeButton()
+    {
+        if (_entity.TryGetComponent(Entity, out BorgChassisComponent? chassis) && chassis.LawCartEntity is { } car)
+        {
+            CartButton.Text = _entity.GetComponent<MetaDataComponent>(car).EntityName;
+            CartView.Visible = true;
+            CartView.SetEntity(car);
+            CartButton.Disabled = false;
+            CartButton.AddStyleClass(StyleClass.ButtonOpenLeft);
+        }
+        else
+        {
+            CartButton.Text = "No law cartridge."; // todo : put that as a localised string.
+            CartView.Visible = false;
+            CartButton.Disabled = true;
+            CartButton.RemoveStyleClass(StyleClass.ButtonOpenLeft);
+        }
     }
 
     public void UpdateBatteryButton()

@@ -1,4 +1,5 @@
-﻿using Robust.Shared.Serialization;
+﻿using Robust.Shared.Network;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared.Silicons.Borgs;
 
@@ -7,6 +8,12 @@ public enum BorgUiKey : byte
 {
     Key
 }
+
+/// <summary>
+/// Send when a player uses the borg BUI to eject a law cartridge.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class BorgEjectLawCartBuiMessage : BoundUserInterfaceMessage;
 
 /// <summary>
 /// Send when a player uses the borg BUI to eject a brain.

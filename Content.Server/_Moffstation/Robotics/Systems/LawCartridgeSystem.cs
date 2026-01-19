@@ -84,4 +84,9 @@ public sealed class LawCartridgeSystem : EntitySystem
 
         _metaDataSystem.SetEntityName(ent, "law cartridge (" + name + ")", metaData);
     }
+
+    public void SetLawset(Entity<LawCartridgeComponent> ent, SiliconLawset siliconLawset)
+    {
+        ent.Comp.Lawset = siliconLawset;
+    }
 }

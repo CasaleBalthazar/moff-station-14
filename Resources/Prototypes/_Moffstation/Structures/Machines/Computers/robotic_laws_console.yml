@@ -1,0 +1,37 @@
+- type: entity
+  parent: BaseComputerAiAccess
+  id: ComputerLaws
+  name: robotic laws console
+  description: read and edit the content of law cartridges
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.LawConsoleUiKey.Key:
+        type: LawConsoleBoundUserInterface
+      enum.WiresUiKey.Key:
+        type: WiresBoundUserInterface
+  - type: ActivatableUI
+    key: enum.LawConsoleUiKey.Key
+  - type: Sprite
+    layers:
+    - map: ["computerLayerBody"]
+      state: computer
+    - map: ["computerLayerScreen"]
+      state: telesci # todo : change name
+    - map: ["computerLayerKeys"]
+      state: telesci_key # todo : change name
+    - map: [ "enum.WiresVisualLayers.MaintenancePanel" ]
+      state: generic_panel_open
+  - type: PointLight # todo : change that
+    radius: 1.5
+    energy: 4.0
+    color: "#1f8c28"
+  - type: Computer
+    board: RoboticLawConsoleCircuitboard # todo : change that
+  - type: AccessReader
+    access: [[ "Research" ]]
+  - type: LawConsole
+    lawCartridgeSlot:
+      whitelist:
+        components:
+        - LawCartridge

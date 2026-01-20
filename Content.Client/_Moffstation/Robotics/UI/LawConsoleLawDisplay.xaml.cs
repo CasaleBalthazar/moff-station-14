@@ -19,7 +19,7 @@ public sealed partial class LawConsoleLawDisplay : BoxContainer
 
     public event Action<SiliconLaw>? MoveLawUp;
     public event Action<SiliconLaw>? MoveLawDown;
-    public event Action<SiliconLaw>? DeleteAction;
+    public event Action<SiliconLaw>? DeleteLaw;
     public event Action<SiliconLaw>? AddAction;
 
 
@@ -38,7 +38,7 @@ public sealed partial class LawConsoleLawDisplay : BoxContainer
 
         if (editable)
         {
-            Delete.OnPressed += _ => DeleteAction?.Invoke(_law!);
+            Delete.OnPressed += _ => DeleteLaw?.Invoke(_law!);
         }
         else
         {

@@ -1,5 +1,17 @@
 - type: entity
-  parent: BaseComputerAiAccess
+  parent: BaseComputerCircuitboard
+  id: RoboticLawConsoleCircuitboard
+  name: Robotic law console board
+  description: A computer printed circuit board for a robotic law console.
+  components:
+  - type: Sprite
+    state: cpu_science
+  - type: ComputerBoard
+    prototype: ComputerLaws
+
+
+- type: entity
+  parent: BaseComputerAiAccess # todo : PROBABLY not AI access ?...
   id: ComputerLaws
   name: robotic laws console
   description: read and edit the content of law cartridges
@@ -35,3 +47,4 @@
       whitelist:
         components:
         - LawCartridge
+

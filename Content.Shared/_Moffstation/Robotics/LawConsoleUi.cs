@@ -36,9 +36,9 @@ public sealed class LawConsoleSaveMessage : BoundUserInterfaceMessage
 {
     public string Name;
     public SiliconLawset Lawset;
-    public EntityUid Target;
+    public NetEntity Target;
 
-    public LawConsoleSaveMessage(string name, SiliconLawset lawset, EntityUid target)
+    public LawConsoleSaveMessage(string name, SiliconLawset lawset, NetEntity target)
     {
         Name = name;
         Lawset = lawset;
@@ -52,9 +52,9 @@ public sealed class LawConsoleTransferMessage : BoundUserInterfaceMessage
 {
     public string Name;
     public SiliconLawset Lawset;
-    public EntityUid Target;
+    public NetEntity Target;
 
-    public LawConsoleTransferMessage(string name, SiliconLawset lawset, EntityUid target)
+    public LawConsoleTransferMessage(string name, SiliconLawset lawset, NetEntity target)
     {
         Name = name;
         Lawset = lawset;
@@ -67,9 +67,9 @@ public sealed class LawConsoleTransferMessage : BoundUserInterfaceMessage
 public sealed class LawConsoleDeleteMessage : BoundUserInterfaceMessage
 {
     public string Name;
-    public EntityUid Target;
+    public NetEntity Target;
 
-    public LawConsoleDeleteMessage(string name, EntityUid target)
+    public LawConsoleDeleteMessage(string name, NetEntity target)
     {
         Name = name;
         Target = target;

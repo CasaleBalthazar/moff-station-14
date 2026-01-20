@@ -83,16 +83,16 @@ public sealed class LawConsoleSystem : EntitySystem
 
     private void OnTransferred(EntityUid uid, LawConsoleComponent component, LawConsoleTransferMessage args)
     {
-        if (component.LawCartridgeSlot.Item == null ||
-            !TryComp(component.LawCartridgeSlot.Item, out LawCartridgeComponent? cartridge))
+        if (! component.LawCartridgeSlot.Item.HasValue)
             return;
 
-        // C# is a retarded langage why the fuck would you make an error here you fucking piece of shit.
+        if (!TryComp(component.LawCartridgeSlot.Item, out LawCartridgeComponent? cartridge))
+            return;
 
-        //Entity<LawCartridgeComponent> ent = new Entity<LawCartridgeComponent>(component.LawCartridgeSlot.Item, cartridge);
 
-        //_cartridgeSystem.SetName((component.LawCartridgeSlot.Item, cartridge), args.Name);
-        //_cartridgeSystem.SetLawset((component.LawCartridgeSlot.Item, cartridge), args.Lawset);
+        // i cast because c#.
+        _cartridgeSystem.SetName(new((EntityUid)component.LawCartridgeSlot.Item, cartridge), args.Name);
+        _cartridgeSystem.SetLawset(new((EntityUid)component.LawCartridgeSlot.Item, cartridge), args.Lawset);
 
         var state = GetCurrentState(uid, component);
         _uiSystem.SetUiState(uid, LawConsoleUiKey.Key, state);

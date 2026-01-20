@@ -9,15 +9,11 @@
             <!-- filled via code -->
         </BoxContainer>
         <customControls:VSeparator/>
-        <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+        <BoxContainer Name="Test" Orientation="Vertical" HorizontalExpand="True">
             <BoxContainer Name="ActionContainer" Orientation="Horizontal" Align="End">
                 <LineEdit Name="NameEdit" HorizontalExpand="True" />
-                <!-- Added dynamically via code to avoid hassle with event subscription
-                <Button Name="TransferButton" Text="{Loc law-console-transfer-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
-                <Button Name="SaveButton" Text="{Loc law-console-save-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
-                <Button Name="DeleteButton" Text="{Loc law-console-delete-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
-                -->
             </BoxContainer>
+            <!-- test to Add the stuff manually via code -->
             <BoxContainer Orientation="Vertical" Margin="4 4 0 0" HorizontalExpand="True" VerticalExpand="True">
                 <ScrollContainer VerticalExpand="True" HorizontalExpand="True" HScrollEnabled="False">
                     <BoxContainer Orientation="Vertical" Name="LawsContainer" Access="Public" VerticalExpand="True" />

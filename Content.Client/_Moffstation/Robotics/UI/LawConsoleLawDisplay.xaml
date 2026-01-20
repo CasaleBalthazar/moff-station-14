@@ -6,7 +6,6 @@
     Orientation="Vertical" >
     <customControls:HSeparator></customControls:HSeparator>
 
-
     <BoxContainer>
         <Label StyleClasses="SiliconLawPositionLabel" Name="PositionText" Margin="5 0 0 0"></Label>
         <PanelContainer

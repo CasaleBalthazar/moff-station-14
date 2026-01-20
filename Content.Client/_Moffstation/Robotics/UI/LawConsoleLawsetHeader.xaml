@@ -1,0 +1,12 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    xmlns:graphics="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    HorizontalExpand="True"
+    Orientation="Horizontal">
+        <LineEdit Name="NameEdit" HorizontalExpand="True" />
+        <Button Name="TransferButton" Text="{Loc law-console-transfer-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
+        <Button Name="SaveButton" Text="{Loc law-console-save-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
+        <Button Name="DeleteButton" Text="{Loc law-console-delete-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
+</BoxContainer>
+

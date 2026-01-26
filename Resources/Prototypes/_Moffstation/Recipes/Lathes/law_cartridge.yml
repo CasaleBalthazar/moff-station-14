@@ -1,0 +1,7 @@
+- type: latheRecipe
+  parent: BaseRoboticsRecipe
+  id: LawCartridgeEmpty
+  result: EmptyLawCartridge
+  materials:
+    Steel: 100
+    Glass: 100

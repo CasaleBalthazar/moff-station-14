@@ -1,0 +1,9 @@
+<controls:FancyWindow
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    MinSize="760 460"
+    SetSize="760 460"
+    Title="{Loc 'law-console-window-title'}">
+
+    <TabContainer Name="Tabs"/>
+</controls:FancyWindow>

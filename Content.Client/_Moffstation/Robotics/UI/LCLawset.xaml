@@ -1,0 +1,21 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    HorizontalExpand="True"
+    Orientation="Vertical">
+
+    <!-- header -->
+    <BoxContainer HorizontalExpand="True" Orientation="Horizontal">
+        <LineEdit Name="NameEdit" HorizontalExpand="True" />
+        <Button Name="TransferButton" Text="{Loc law-console-transfer-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
+        <Button Name="SaveButton" Text="{Loc law-console-save-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
+        <Button Name="DeleteButton" Text="{Loc law-console-delete-action}" MaxSize="256 64" Access="Public" StyleClasses="OpenLeft"/>
+    </BoxContainer>
+
+    <!-- laws -->
+    <ScrollContainer VerticalExpand="True">
+        <BoxContainer Name="LawControls" Orientation="Vertical">
+            <!-- filled via code -->
+        </BoxContainer>
+    </ScrollContainer>
+
+</BoxContainer>

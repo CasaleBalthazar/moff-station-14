@@ -1,0 +1,21 @@
+<BoxContainer
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+    xmlns:customControls="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    MinSize="760 400"
+    Orientation="Horizontal" Align="Begin">
+
+    <ScrollContainer VerticalExpand="True" HScrollEnabled="False" MinSize="200 100"> <!-- minsize ?-->
+        <BoxContainer Name="LawsetButtons" Orientation="Vertical" Align="Begin">
+            <!-- filled via code -->
+        </BoxContainer>
+    </ScrollContainer>
+
+    <customControls:VSeparator/>
+
+    <!-- Lawset Display -->
+    <Control Name="LawsetControl" HorizontalExpand="True">
+        <!-- place for the LawContainer here -->
+    </Control>
+
+</BoxContainer>

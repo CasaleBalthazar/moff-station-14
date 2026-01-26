@@ -1,5 +1,6 @@
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Silicons.Laws;
+using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Robotics.Components;
@@ -46,4 +47,10 @@ public sealed partial class LawConsoleComponent : Component
         { "Artist", "PainterLawset" },
         { "Nutimov", "NutimovLawset" },
     };
+
+    /// <summary>
+    /// Sound to play when a lawset is transfered into a cartridge.
+    /// </summary>
+    [DataField]
+    public SoundSpecifier TransferSound = new SoundPathSpecifier("/Audio/Machines/high_tech_confirm.ogg");
 }

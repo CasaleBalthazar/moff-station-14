@@ -20,7 +20,7 @@ public sealed partial class LawConsoleLawDisplay : BoxContainer
     public event Action<SiliconLaw>? MoveLawUp;
     public event Action<SiliconLaw>? MoveLawDown;
     public event Action<SiliconLaw>? DeleteLaw;
-    public event Action<SiliconLaw>? AddAction;
+    public event Action<SiliconLaw>? AddLaw;
 
 
     public LawConsoleLawDisplay(bool editable = true)
@@ -45,7 +45,7 @@ public sealed partial class LawConsoleLawDisplay : BoxContainer
             MoveUp.Disabled = true;
             MoveDown.Disabled = true;
             Delete.Text = "Add";
-            Delete.OnPressed += _ => AddAction?.Invoke(_law!);
+            Delete.OnPressed += _ => AddLaw?.Invoke(_law!);
         }
     }
 

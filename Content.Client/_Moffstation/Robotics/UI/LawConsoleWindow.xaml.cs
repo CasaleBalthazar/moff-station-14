@@ -9,10 +9,15 @@ using Robust.Client.UserInterface.XAML;
 
 namespace Content.Client._Moffstation.Robotics.UI;
 
+// TODO : find out how to make tabs work, and do 3 tabs with
+// TAB 1 : Cartridge
+// TAB 2 : Standards
+// TAB 3 : Saved
+// currentState is going to fuck me up so might as well do it with default values and call it a day.
 [GenerateTypedNameReferences]
 public sealed partial class LawConsoleWindow : FancyWindow
 {
-    private LawConsoleState? currentState;
+    private LawConsoleState currentState;
 
     public Action<string, SiliconLawset>? OnTransfer;
     public Action<string, SiliconLawset>? OnSave;
@@ -21,6 +26,14 @@ public sealed partial class LawConsoleWindow : FancyWindow
     public LawConsoleWindow()
     {
         RobustXamlLoader.Load(this);
+        currentState = new LawConsoleState(
+            false,
+            string.Empty,
+            new SiliconLawset(),
+            new Dictionary<string, SiliconLawset>(),
+            new Dictionary<string, SiliconLawset>()
+            );
+
         NewLawButton.OnPressed += _ => AddCartridgeLaw();
     }
 
@@ -31,7 +44,7 @@ public sealed partial class LawConsoleWindow : FancyWindow
         DisplayLawsetList(state.StandardLawsets, state.SavedLawsets);
 
         if (state.IsCartridgeInserted)
-            DisplayLawset(state.CartridgeName, state.CartridgeLawset, true);
+            DisplayLawset(state.CartridgeName, state.CartridgeLawset, true, false);
         else
             DisplayNoCartridge();
     }
@@ -40,14 +53,17 @@ public sealed partial class LawConsoleWindow : FancyWindow
     {
         LawsetsContainer.RemoveAllChildren();
 
+        var group = new ButtonGroup();
+
         var cartridgeButton = new Button
         {
             Text = "CARTRIDGE",
+            Group = group,
         };
         cartridgeButton.OnPressed += _ =>
         {
             if (currentState is { IsCartridgeInserted: true })
-                DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true);
+                DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true, false);
             else
                 DisplayNoCartridge();
         };
@@ -59,8 +75,9 @@ public sealed partial class LawConsoleWindow : FancyWindow
             var button = new Button
             {
                 Text = name,
+                Group = group,
             };
-            button.OnPressed += _ => DisplayLawset(name, lawset, false);
+            button.OnPressed += _ => DisplayLawset(name, lawset, false, false);
             LawsetsContainer.AddChild(button);
         }
 
@@ -69,19 +86,24 @@ public sealed partial class LawConsoleWindow : FancyWindow
             var button = new Button
             {
                 Text = name,
+                Group = group,
             };
-            button.OnPressed += _ => DisplayLawset(name, lawset, false);
+            button.OnPressed += _ => DisplayLawset(name, lawset, false, true);
             LawsetsContainer.AddChild(button);
         }
     }
 
-    private void DisplayLawset(string name, SiliconLawset lawset, bool editable)
+    private void DisplayLawset(string name, SiliconLawset lawset, bool editable, bool deletable)
     {
         Test.RemoveChild(0); // remove previous header
 
-        var header = new LawConsoleLawsetHeader(name, editable, false);
-        header.LawsetTransfered += () => OnTransfer?.Invoke(name, lawset);
-        header.LawsetSaved += () => OnSave?.Invoke(name, lawset);
+        var header = new LawConsoleLawsetHeader(name, editable, deletable);
+        header.NameChanged += newName =>
+        {
+            currentState?.CartridgeName = newName;
+        };
+        header.LawsetTransfered += () => OnTransfer?.Invoke(name, lawset); // issue is i called name here so of course.
+        header.LawsetSaved += SaveLawset;
         header.LawsetDeleted += () => OnDelete?.Invoke(name);
 
         Test.AddChild(header);
@@ -96,11 +118,11 @@ public sealed partial class LawConsoleWindow : FancyWindow
             control.MoveLawUp += _ => MoveCartridgeLawUp(law);
             control.MoveLawDown += _ => MoveCartridgeLawDown(law);
             control.DeleteLaw += _ => DeleteCartridgeLaw(law);
+            control.AddLaw += _ => AddCartridgeLaw(law);
 
             LawsContainer.AddChild(control);
         }
     }
-
 
     private void DisplayNoCartridge()
     {
@@ -117,12 +139,13 @@ public sealed partial class LawConsoleWindow : FancyWindow
         LawsContainer.AddChild(label);
     }
 
+    private void SaveLawset()
+    {
+        OnSave?.Invoke(currentState.CartridgeName, currentState.CartridgeLawset);
+    }
 
     private void MoveCartridgeLawUp(SiliconLaw law)
     {
-        if (currentState == null)
-            return;
-
         if (currentState.CartridgeLawset.Laws.Count == 0)
             return;
 
@@ -134,14 +157,11 @@ public sealed partial class LawConsoleWindow : FancyWindow
             (currentState.CartridgeLawset.Laws[index], currentState.CartridgeLawset.Laws[index - 1]);
 
         OrderCartridgeLaws();
-        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true);
+        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true, false);
     }
 
     private void MoveCartridgeLawDown(SiliconLaw law)
     {
-        if (currentState == null)
-            return;
-
         if (currentState.CartridgeLawset.Laws.Count == 0)
             return;
 
@@ -153,7 +173,7 @@ public sealed partial class LawConsoleWindow : FancyWindow
             (currentState.CartridgeLawset.Laws[index], currentState.CartridgeLawset.Laws[index + 1]);
 
         OrderCartridgeLaws();
-        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true);
+        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true, false);
     }
 
     private void AddCartridgeLaw(SiliconLaw? law = null)
@@ -161,20 +181,14 @@ public sealed partial class LawConsoleWindow : FancyWindow
         if (currentState is not { IsCartridgeInserted: true })
             return;
 
-        if (law != null)
-            currentState.CartridgeLawset.Laws.Add(law);
-        else
-            currentState.CartridgeLawset.Laws.Add(new SiliconLaw());
+        currentState.CartridgeLawset.Laws.Add(law ?? new SiliconLaw());
 
         OrderCartridgeLaws();
-        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true);
+        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true, false);
     }
 
     private void DeleteCartridgeLaw(SiliconLaw law)
     {
-        if (currentState == null)
-            return;
-
         if (currentState.CartridgeLawset.Laws.Count == 0)
             return;
 
@@ -185,15 +199,11 @@ public sealed partial class LawConsoleWindow : FancyWindow
         currentState.CartridgeLawset.Laws.RemoveAt(index);
 
         OrderCartridgeLaws();
-        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true);
+        DisplayLawset(currentState.CartridgeName, currentState.CartridgeLawset, true, false);
     }
-
 
     private void OrderCartridgeLaws()
     {
-        if (currentState == null)
-            return;
-
         if (currentState.CartridgeLawset.Laws.Count == 0)
             return;
 

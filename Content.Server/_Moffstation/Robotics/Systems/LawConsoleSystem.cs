@@ -3,6 +3,7 @@ using Content.Shared._Moffstation.Robotics;
 using Content.Shared._Moffstation.Robotics.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Silicons.Laws;
+using Robust.Server.Audio;
 using Robust.Server.GameObjects;
 
 namespace Content.Server._Moffstation.Robotics.Systems;
@@ -18,6 +19,7 @@ public sealed class LawConsoleSystem : EntitySystem
     [Dependency] private readonly SiliconLawSystem _lawSystem = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlotsSystem = default!;
     [Dependency] private readonly LawCartridgeSystem _cartridgeSystem = default!;
+    [Dependency] private readonly AudioSystem _audioSystem = default!;
 
 
     private const string CartridgeSlotID = "Cartridge"; // todo : probably put this in the component ?...
@@ -93,6 +95,8 @@ public sealed class LawConsoleSystem : EntitySystem
         // i cast because c#.
         _cartridgeSystem.SetName(new((EntityUid)component.LawCartridgeSlot.Item, cartridge), args.Name);
         _cartridgeSystem.SetLawset(new((EntityUid)component.LawCartridgeSlot.Item, cartridge), args.Lawset);
+
+        _audioSystem.PlayPvs(component.TransferSound, uid);
 
         var state = GetCurrentState(uid, component);
         _uiSystem.SetUiState(uid, LawConsoleUiKey.Key, state);

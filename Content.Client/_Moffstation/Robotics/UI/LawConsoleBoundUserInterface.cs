@@ -6,7 +6,8 @@ namespace Content.Client._Moffstation.Robotics.UI;
 public sealed class LawConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
-    public LawConsoleWindow _window = default!;
+    //public LawConsoleWindow _window = default!;
+    public LCWindow _window = default!;
 
     private readonly EntityManager _entityManager;
 
@@ -14,7 +15,8 @@ public sealed class LawConsoleBoundUserInterface : BoundUserInterface
 
     public LawConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
-        _window = this.CreateWindow<LawConsoleWindow>();
+        //_window = this.CreateWindow<LawConsoleWindow>();
+        _window = this.CreateWindow<LCWindow>();
         _entityManager = IoCManager.Resolve<EntityManager>();
         _consoleUid = owner;
     }

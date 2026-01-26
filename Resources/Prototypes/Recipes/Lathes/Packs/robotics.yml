@@ -7,6 +7,7 @@
   - PositronicBrain
   - SciFlash
   - CyborgEndoskeleton
+  - LawCartridgeEmpty # Moffstation - For all your laws-related concerns
 
 - type: latheRecipePack
   id: BorgModulesStatic

@@ -18,8 +18,8 @@ public sealed class CryoLifeSupportBoundUserInterface : BoundUserInterface
         _window = this.CreateWindow<CryoLifeSupportWindow>();
         _window.Title = EntMan.GetComponent<MetaDataComponent>(Owner).EntityName;
 
-        _window.OnJumpStartBrainPressed += ReviveBrainPressed;
-        _window.OnDetachCapsulePressed += EjectCapsulePressed;
+        _window.OnReviveBrainPressed += ReviveBrainPressed;
+        _window.OnEjectCapsulePressed += EjectCapsulePressed;
         _window.OnEjectBeakerPressed += EjectBeakerPressed;
     }
 
@@ -40,10 +40,10 @@ public sealed class CryoLifeSupportBoundUserInterface : BoundUserInterface
 
     protected override void ReceiveMessage(BoundUserInterfaceMessage message)
     {
-        if (message is not CryoLifeSupportUiState cast)
-            return;
-
         base.ReceiveMessage(message);
+
+        if (message is not CryoLifeSupportUiStateNew cast)
+            return;
         _window?.SetState(cast);
     }
 }

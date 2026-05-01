@@ -22,8 +22,8 @@ public sealed partial class CryoLifeSupportWindow : FancyWindow
     private readonly SharedAtmosphereSystem _atmosphere = default!;
 
     public Action? OnEjectBeakerPressed;
-    public Action? OnDetachCapsulePressed;
-    public Action? OnJumpStartBrainPressed;
+    public Action? OnEjectCapsulePressed;
+    public Action? OnReviveBrainPressed;
     public Action<int>? OnInjectPressed;
 
     public CryoLifeSupportWindow()
@@ -33,8 +33,8 @@ public sealed partial class CryoLifeSupportWindow : FancyWindow
 
         _atmosphere = _entityManager.System<SharedAtmosphereSystem>();
 
-        JumpStartBrainButton.OnPressed += _ => OnJumpStartBrainPressed?.Invoke();
-        DetachCapsuleButton.OnPressed += _ => OnDetachCapsulePressed?.Invoke();
+        RevivePatientButton.OnPressed += _ => OnReviveBrainPressed?.Invoke();
+        EjectPatientButton.OnPressed += _ => OnEjectCapsulePressed?.Invoke();
 
         EjectBeakerButton.OnPressed += _ => OnEjectBeakerPressed?.Invoke();
         Inject1.OnPressed += _ => OnInjectPressed?.Invoke(1);
@@ -43,39 +43,35 @@ public sealed partial class CryoLifeSupportWindow : FancyWindow
         Inject20.OnPressed += _ => OnInjectPressed?.Invoke(20);
     }
 
-
-    public void SetState(CryoLifeSupportUiState state)
+    public void SetState(CryoLifeSupportUiStateNew state)
     {
         SetGasMix(state.GasMix);
-        SetBeakerMix(state);
-        SetCapsule(state.CapsuleEntity, state.Organs);
+        SetBeakerMix(state.ReagentsCapacity, state.Reagents, state.CapsuleEntity);
+        SetCapsule(state.CapsuleEntity);
     }
 
-    private void SetCapsule(NetEntity? capsule, List<(string,OrganEntry)>? organs)
+    public void SetCapsule(NetEntity? capsule)
     {
-        if (capsule is not { } entity)
+        if (capsule is null)
         {
             PatientSection.Visible = false;
+            RevivePatientButton.Disabled = true;
+            EjectPatientButton.Disabled = true;
             return;
         }
 
         PatientSection.Visible = true;
-        SpriteView.SetEntity(entity);
 
-        NameLabel.Text = "CryoCapsule";
-        SpeciesLabel.Text = "Ready"; // todo !
+        SpriteView.SetEntity(capsule.Value);
+        NameLabel.Text = "Capsule"; // todo : retrieve from patient
+        StatusLabel.Text = "Ready"; // todo : retrieve from patient
 
-        OrgansCheckList.RemoveAllChildren();
+        // maybe get infos in text ?
 
-        if (organs is null)
-            return;
+        RevivePatientButton.Disabled = false;
+        EjectPatientButton.Disabled = false;
 
-        foreach (var (name, entry) in organs)
-        {
-            OrgansCheckList.AddChild(new OrganStatusControl(name, entry));
-        }
     }
-
     private void SetGasMix(GasMixEntry mix)
     {
         Pressure.Text = Loc.GetString("gas-analyzer-window-pressure-val-text",
@@ -111,10 +107,9 @@ public sealed partial class CryoLifeSupportWindow : FancyWindow
             GasMixChart.AddEntry(gasEntry.Amount, gasProto.Color, tooltip: tooltip);
         }
     }
-
-    private void SetBeakerMix(CryoLifeSupportUiState state)
+    public void SetBeakerMix(FixedPoint2? capacity, List<ReagentQuantity>? reagents, NetEntity? capsule)
     {
-        var totalBeakerCapacity = state.ReagentsCapacity ?? 0;
+        var totalBeakerCapacity = capacity ?? 0;
         var availableQuantity = new FixedPoint2();
 
         ChemicalsChart.Clear();
@@ -122,9 +117,9 @@ public sealed partial class CryoLifeSupportWindow : FancyWindow
 
         var chartMaxChemsQuantity = ChemicalsChart.Capacity;
 
-        if (state.Reagents != null)
+        if (reagents != null)
         {
-            foreach (var (reagent, quantity) in state.Reagents!)
+            foreach (var (reagent, quantity) in reagents)
             {
                 availableQuantity += quantity;
 
@@ -144,15 +139,15 @@ public sealed partial class CryoLifeSupportWindow : FancyWindow
             }
         }
 
-        var hasPatient = (state.CapsuleEntity != null);
+        var hasPatient = (capsule != null);
 
-        var isChemicalsChartVisible = (state.Reagents != null);
+        var isChemicalsChartVisible = (reagents != null);
         NoBeakerText.Visible = !isChemicalsChartVisible;
         ChemicalsChart.Visible = isChemicalsChartVisible;
         Inject1.Disabled = (!hasPatient || availableQuantity < 0.1f);
         Inject5.Disabled = (!hasPatient || availableQuantity <= 1);
         Inject10.Disabled = (!hasPatient || availableQuantity <= 5);
         Inject20.Disabled = (!hasPatient || availableQuantity <= 10);
-        EjectBeakerButton.Disabled = state.Reagents == null;
+        EjectBeakerButton.Disabled = reagents == null;
     }
 }

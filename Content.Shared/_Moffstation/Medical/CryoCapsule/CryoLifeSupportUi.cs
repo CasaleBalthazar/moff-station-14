@@ -13,7 +13,7 @@ public enum CryoLifeSupportUiKey : byte
 }
 
 /// <summary>
-/// Sent when an action with no parameter is requested from the UI
+/// Sent by the UI to perform an action with no parameter.
 /// </summary>
 /// <param name="action"></param>
 [Serializable, NetSerializable]
@@ -34,6 +34,23 @@ public sealed class CryoLifeSupportInjectUiMessage(int quantity) : BoundUserInte
 {
     public int Quantity = quantity;
 }
+
+
+[Serializable, NetSerializable]
+public sealed class CryoLifeSupportUiStateNew(
+    GasMixEntry gasMix,
+    FixedPoint2? reagentsCapacity,
+    List<ReagentQuantity>? reagents,
+    NetEntity? capsuleEntity)
+    : BoundUserInterfaceMessage
+{
+    // decouple the life support ui and the capsule ui.
+    public readonly GasMixEntry GasMix = gasMix;
+    public readonly FixedPoint2? ReagentsCapacity = reagentsCapacity;
+    public readonly List<ReagentQuantity>? Reagents = reagents;
+    public readonly NetEntity? CapsuleEntity = capsuleEntity;
+}
+
 
 /// <summary>
 /// Send to update the state of the UI.

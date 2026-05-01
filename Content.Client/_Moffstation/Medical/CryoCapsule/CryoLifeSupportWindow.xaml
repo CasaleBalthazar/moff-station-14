@@ -110,47 +110,45 @@
             </BoxContainer>
         </BoxContainer>
 
-        <!-- separator-->
-        <PanelContainer StyleClasses="LowDivider" VerticalExpand="True" Margin="0 0 0 0" SetWidth="2"/>
-
         <BoxContainer Name="PatientSection"
-                      VerticalExpand="True"
-                      Orientation="Vertical"
-                      MinWidth="250"
-                      MaxWidth="250">
-
-            <BoxContainer Name="CapsulePanel" Orientation="Vertical">
-                <BoxContainer Orientation="Horizontal" Margin="0 0 0 5">
-                    <SpriteView OverrideDirection="South"
-                                Scale="2 2"
-                                Name="SpriteView"
-                                Access="Public"
-                                SetSize="64 64" />
-                    <BoxContainer Margin="5 0 0 0" Orientation="Vertical" VerticalAlignment="Top">
-                        <RichTextLabel Name="NameLabel"/>
-                        <Label Name="SpeciesLabel" VerticalAlignment="Top" StyleClasses="LabelSubText" />
+                      Visible="False">
+            <PanelContainer StyleClasses="LowDivider" VerticalExpand="True" Margin="0 0 0 0" SetWidth="2"/>
+            <!-- Patient infos -->
+            <BoxContainer Orientation="Vertical"
+                          MinWidth="250"
+                          MaxWidth="250">
+                    <!-- Portraint & Status -->
+                    <BoxContainer Orientation="Horizontal" Margin="0 0 0 5">
+                        <SpriteView OverrideDirection="South"
+                                    Scale="2 2"
+                                    Name="SpriteView"
+                                    Access="Public"
+                                    SetSize="64 64"/>
+                        <BoxContainer Margin="5 0 0 0"
+                                      Orientation="Vertical"
+                                      VerticalAlignment="Top">
+                            <RichTextLabel Name="NameLabel"/>
+                            <Label Name="StatusLabel"
+                                   VerticalAlignment="Top"
+                                   StyleClasses="LabelSubText"/>
+                        </BoxContainer>
                     </BoxContainer>
-                </BoxContainer>
 
-                <PanelContainer StyleClasses="LowDivider" />
+                    <PanelContainer StyleClasses="LowDivider" />
 
-                <BoxContainer VerticalExpand="True"
-                              Orientation="Vertical">
-                    <!-- ideally we want a ScrollContainer but this *EPIC* control just want to collapse into itself. joy. -->
-                    <BoxContainer Name="OrgansCheckList"
-                                  Orientation="Vertical"
-                                  VerticalExpand="True"/> <!-- populated via code -->
-                </BoxContainer>
+                    <!-- Capsule Ui Fragment -->
+                    <PanelContainer Name="CapsuleUiFragmentContainer"
+                                    VerticalExpand="True"/>
 
-                <PanelContainer StyleClasses="LowDivider" />
+                    <PanelContainer StyleClasses="LowDivider" />
 
-                <BoxContainer Orientation="Horizontal">
-                    <Button Name="JumpStartBrainButton" Text="Revive" StyleClasses="OpenBoth"/>
-                    <Button Name="DetachCapsuleButton" Text="Detach" StyleClasses="OpenBoth"/>
-                </BoxContainer>
-
+                    <!-- Buttons -->
+                    <BoxContainer Orientation="Horizontal"
+                                  Align="Center">
+                        <Button Name="RevivePatientButton" Text="Revive" StyleClasses="OpenBoth"/>
+                        <Button Name="EjectPatientButton" Text="Detach" StyleClasses="OpenBoth" />
+                    </BoxContainer>
             </BoxContainer>
-
         </BoxContainer>
 
 

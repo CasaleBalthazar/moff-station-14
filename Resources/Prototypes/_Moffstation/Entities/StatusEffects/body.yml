@@ -1,0 +1,6 @@
+## stop many of your body functions such as breathing.
+- type: entity
+  parent: MobStatusEffectBase
+  id: StatusEffectCryoStasis
+  #components:
+  #- type: CryoStatisStatusEffect

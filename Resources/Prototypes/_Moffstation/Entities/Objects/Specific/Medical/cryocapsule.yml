@@ -1,82 +1,116 @@
+# todo : 1 - find a way to display to organs now... OKAY ! work, kinda ! need to rework the layers big time tho.
+#        2 - separate the mob and capsule sprites (different rsi)
+#        3 - make sure it's dead up until we revive the fucker.
+
+# describe the cryocapsule item
 - type: entity
   parent: BaseItem
-  id: Cryocapsule
+  id : CryoCapsuleEmpty
   name: cryogenic capsule
-  description: a cryogenic tube to store organs and keep them alive in the absence of a body.
+  description: a miniature cryogenic pod able to keep organs alive in absence of a body.
   components:
-  - type: Physics
-    bodyType: KinematicController
-  - type: BlockMovement
-
-  - type: MindContainer
-  - type: Examiner
-  - type: Speech
-    speechSounds: Pai
-  - type: TypingIndicator
-    proto: slime
-
+  - type: CryoCapsule
   - type: FitInCryoLifeSupport
-  - type: CryoCapsule # todo : ExposedOrgans could probably be a more reusable way to do that.
-    canContain:
-    - Brain
-    - Eyes
-    - Lungs
-    - Heart
-    - Stomach
-    criticalOrgans:
-    - Brain
-    - Lungs
-    - Heart
-
-  # todo : absolutely rename that.
-  - type: MobWhenAlive # the cryocapsule is a mob when alive and return to be an inanimate object when it dies.
-    addWhenAlive:
-    - type: MobState
-      allowedStates:
-      - Alive
-      - Dead
-    - type: Respirator
-      damage:
-        types:
-          Asphyxiation: 0.2
-      damageRecovery:
-        types:
-          Asphyxiation: -1.0
-      maxSaturation: 15
-    - type: MobThresholds
-      thresholds:
-        0: Alive
-        150: Dead
-    - type: Bloodstream
-      bloodReferenceSolution:
-        reagents:
-        - ReagentId: Cryoformol
-          Quantity: 300
-      bloodlossDamage:
-        types:
-          Bloodloss:
-            0.5
-      bloodlossHealDamage:
-        types:
-          Bloodloss:
-            -0.25
-    - type: Hunger
-    - type: Thirst
-
-  - type: SolutionContainerManager
-
-  - type: Body
-  - type: Damageable # todo : make the Damageable stuff.
-
-  - type: StatusEffects
-    allowed:
-    - TemporaryBlindness
-
+  - type: ContainerContainer
+    containers:
+      body_container: !type:ContainerSlot
+        showEnts: true
+  - type: ContainerFill
+    containers:
+      body_container:
+      - CryoCapsuleContent
+  - type: Lock
+    unlockOnClick: False
+    useAccess: False # temporary i'll probably add Medical access or something.
+    # todo : add some damage visuals
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallic
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:EmptyAllContainersBehaviour
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WindowShatter
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+  - type: Item
+    size: Ginormous
   - type: Sprite
     sprite: _Moffstation/Objects/Specific/Medical/cryocapsule.rsi
-    # todo : add layers to stop the damn client exception.
-    state: empty
-    noRot: true
+    state: empty2
+
+# describe the organism inside the cryocapsule
+- type: entity
+  parent:
+  - MobBloodstream
+  - MobRespirator
+  id: CryoCapsuleContent
+  name: capsule content
+  description: a set of organs inside a cryocapsule.
+  suffix: DO NOT MAP
+  components:
+  - type: GibWhenOutsideContainer # your body cannot hold itself together
+  - type: Body
+  - type: ExposedOrgans
+    exposedOrgans:
+      brain: Brain
+      eyes: Eyes
+      lungs: Lungs
+      heart: Heart
+      stomach: Stomach
+     # working on this currently.
+#  - type: OrgansEffects
+#    vitalOrgans: # you simply cannot live if any of those organs is missing.
+#      organs:
+#      - Brain
+#      - Lungs # i debate if i include it (asphyxiation is already there)
+#      - Heart
+#      requireAll: True
+#      onAbsent:
+#      - CannotLiveStatusEffect
+#    visionOrgans:
+#      organs:
+#      - Eyes
+#      onAbsent:
+#      - TemporaryBlindness
+  # biology
+  - type: Bloodstream
+    bloodRefreshAmount : 0 # Cryoformol is not produced by the organs
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: Cryoformol
+        Quantity: 300
+    bloodlossDamage:
+      types:
+        Bloodloss: 0.5
+    bloodlossHealDamage:
+      types:
+        Bloodloss: -1
+  # visuals
+  - type: Sprite
+    sprite: _Moffstation/Objects/Specific/Medical/cryocapsule.rsi
+    layers:
+    - state: base
+    - state: brain
+      map: ["enum.CryoCapsuleMobVisuals.Brain"]
+      visible: false
+    - state: eyes
+      map: ["enum.CryoCapsuleMobVisuals.Eyes"]
+      visible: false
+    - state: stomach
+      map: ["enum.CryoCapsuleMobVisuals.Stomach"]
+      visible: false
+    - state: lungs
+      map: ["enum.CryoCapsuleMobVisuals.Lungs"]
+      visible: false
+    - state: heart
+      map: ["enum.CryoCapsuleMobVisuals.Heart"]
+      visible: false
   - type: Appearance
   - type: ItemMapper
     mapLayers:
@@ -100,5 +134,3 @@
         whitelist:
           tags:
           - Heart
-  - type: Item
-    size: Huge

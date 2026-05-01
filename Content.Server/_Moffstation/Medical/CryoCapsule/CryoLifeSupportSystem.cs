@@ -31,10 +31,6 @@ public sealed partial class CryoLifeSupportSystem : SharedCryoLifeSupportSystem
     [Dependency] private readonly AtmosphereSystem _atmos = default!;
     [Dependency] private readonly GasCanisterSystem _gasCan = default!;
 
-    [Dependency] private readonly SharedSolutionContainerSystem _solution = default!;
-
-    [Dependency] private readonly ChatSystem _chat = default!;
-
     /// <inheritdoc/>
 
     // probably not the way but. heh.
@@ -72,26 +68,12 @@ public sealed partial class CryoLifeSupportSystem : SharedCryoLifeSupportSystem
         var gasMix = _gasAnalyzer.GenerateGasMixEntry("Cryogenic Life Support", airComp.Air);
         var (reagentCapacity, reagents) = GenerateReagentsEntry(ent);
 
-        var capsuleEntity = ent.Comp.CapsuleSlot.Item;
-        if (capsuleEntity is not { } capsule)
-        {
-            _ui.ServerSendUiMessage(ent.Owner,
-                CryoLifeSupportUiKey.Key,
-                new CryoLifeSupportUiState(gasMix, reagentCapacity, reagents, null, null));
-            return;
-        }
+        var capsuleEntity = GetNetEntity(ent.Comp.CapsuleSlot.Item);
 
-        var query = new OrganStatusQueryEvent(ent.Comp.MonitoredOrgans);
-        RaiseLocalEvent(capsule, ref query);
+        _ui.ServerSendUiMessage(ent.Owner, CryoLifeSupportUiKey.Key,
+                new CryoLifeSupportUiStateNew(gasMix, reagentCapacity, reagents, capsuleEntity));
 
-        _ui.ServerSendUiMessage(ent.Owner,
-            CryoLifeSupportUiKey.Key,
-            new CryoLifeSupportUiState(
-                gasMix,
-                reagentCapacity,
-                reagents,
-                GetNetEntity(capsule),
-                ent.Comp.MonitoredOrganNames.Zip(query.OrganEntries, (x,y) => (x,y)).ToList()));
+        // todo : get fragment from the patient
     }
 
     private void OnAtmosDeviceUpdate(Entity<CryoLifeSupportComponent> ent, ref AtmosDeviceUpdateEvent args)

@@ -48,20 +48,7 @@
     color: "#56c3b9"
 
   # cryocapsule
-  ## todo : this need to be more general : Simply ask a FitInCryoLifeSupport and ask for a ui fragment like cartridge stuff.
   - type: CryoLifeSupport
-    monitoredOrgans:
-    - Brain
-    - Eyes
-    - Lungs
-    - Heart
-    - Stomach
-    monitoredOrganNames:
-    - Brain
-    - Eyes
-    - Lungs
-    - Heart
-    - Stomach
     capsuleSlot:
       name: cryomachine-capsule-slot-name
       whitelist:

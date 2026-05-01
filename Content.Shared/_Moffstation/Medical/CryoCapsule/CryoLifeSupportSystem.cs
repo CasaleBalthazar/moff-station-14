@@ -1,5 +1,10 @@
 using Content.Shared.Audio;
+using Content.Shared.Body.Components;
+using Content.Shared.Chemistry.Components;
+using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Containers.ItemSlots;
+using Content.Shared.FixedPoint;
 using Content.Shared.Jittering;
 using Content.Shared.Medical.Cryogenics;
 using Robust.Shared.Audio.Systems;
@@ -14,13 +19,13 @@ namespace Content.Shared._Moffstation.Medical.CryoCapsule;
 /// </summary>
 public abstract partial class SharedCryoLifeSupportSystem : EntitySystem
 {
-    [Dependency] private readonly EntityManager _entity = default!;
-
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
 
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedAmbientSoundSystem _ambient = default!;
+
+    [Dependency] protected readonly SharedSolutionContainerSystem _solution = default!;
 
     [Dependency] private readonly SharedJitteringSystem _jitter = default!;
 
@@ -95,9 +100,23 @@ public abstract partial class SharedCryoLifeSupportSystem : EntitySystem
         }
     }
 
+    // todo : it just don't work, man.
     private void OnInjectUiMessage(Entity<CryoLifeSupportComponent> ent, ref CryoLifeSupportInjectUiMessage args)
     {
-        // todo
+        if (ent.Comp.CapsuleSlot.Item is not { } capsule ||
+            ent.Comp.BeakerSlot.Item is not { } beaker ||
+            !_solution.TryGetSolution(capsule, BloodstreamComponent.DefaultBloodSolutionName, out var capEnt, out var capSol) ||
+            !_solution.TryGetFitsInDispenser(beaker, out var beakEnt, out var beakSol))
+            return;
+
+        var plannedInjectedQuantity = FixedPoint2.Min(beakSol.AvailableVolume, args.Quantity);
+        var reallyInjectedQuantity = FixedPoint2.Min(plannedInjectedQuantity, capEnt.Value.Comp.Solution.AvailableVolume);
+
+        if (reallyInjectedQuantity <= 0)
+            return;
+
+        var injectedSolution = _solution.SplitSolution(beakEnt.Value, reallyInjectedQuantity);
+        _solution.Inject(capsule, capEnt.Value, injectedSolution);
     }
 }
 

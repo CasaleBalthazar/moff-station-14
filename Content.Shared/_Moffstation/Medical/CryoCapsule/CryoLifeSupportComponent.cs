@@ -41,18 +41,6 @@ public sealed partial class CryoLifeSupportComponent : Component
     #endregion
 
     /// <summary>
-    /// The organs category that will be displayed inside the UI.
-    /// </summary>
-    [DataField]
-    public List<ProtoId<OrganCategoryPrototype>> MonitoredOrgans;
-
-    /// <summary>
-    /// The name of each organs when displayed in the UI.
-    /// </summary>
-    [DataField]
-    public List<string> MonitoredOrganNames;
-
-    /// <summary>
     /// Sound emitted when the capsule is detached
     /// </summary>
     [DataField]
@@ -83,7 +71,7 @@ public sealed partial class CryoLifeSupportComponent : Component
 
 
 /// <summary>
-/// This is used for entities that can be inserted inside a Cryogenic Life Support machine.
+/// This is used to indicate that an entity can be inserted inside a Cryogenic Life Support machine.
 /// </summary>
 [RegisterComponent, NetworkedComponent]
 public sealed partial class FitInCryoLifeSupportComponent : Component;

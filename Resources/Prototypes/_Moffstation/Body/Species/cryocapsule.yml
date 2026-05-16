@@ -173,7 +173,7 @@
         - Eyes
         appliedWhenAbsent: [] # todo ! StatusEffectBlindness
         appliedWhenPresent: []
-      purification: # your body cannot treat wastes, slowly poisonning you
+      purification: # your body cannot treat wastes, slowly poisoning you
         categories:
         - Kidneys
         - Liver
@@ -182,9 +182,12 @@
 
   # blood feature
   - type: Bloodstream
-    bloodReferenceSolution: Cryoformol
+    bloodReferenceSolution:
+      reagents:
+      - ReagentId: Cryoformol
+        Quantity: 300
     bleedReductionAmount: 0 # outer layer is not skin and won't heal naturally
-    bloodRefreshAmount: 0   # body don't produce cryoformol naturally
+    bloodRefreshAmount: 0   # body don't produce Cryoformol naturally
 
   # damage profile
   - type: Damageable # your capsule is made of glass

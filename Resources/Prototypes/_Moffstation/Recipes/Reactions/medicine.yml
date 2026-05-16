@@ -1,0 +1,12 @@
+# inspired by real life formaline
+- type: reaction
+  id: Cryoformol
+  reactants:
+    Cryoxadone:
+      amount: 2
+    Water:
+      amount: 2
+    Ethanol:
+      amount: 1
+  products:
+    Cryoformol: 5

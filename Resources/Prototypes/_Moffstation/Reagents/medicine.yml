@@ -1,19 +1,22 @@
 - type: reagent
   id: Cryoformol
-  name: reagent-name-cryptobiolin
+  name: reagent-name-cryoformol
   group: Medicine
-  desc: reagent-desc-cryptobiolin
+  desc: reagent-desc-cryoformol
   physicalDesc: reagent-physical-desc-fizzy
-  allowedDepartments:
-  - Medical
   flavor: medicine
-  color: "#081a80"
+  color: "#0fbcbc"
   metabolisms:
     Bloodstream:
       effects:
-      - !type:ModifyStatusEffect
-        effectProto: StatusEffectScrambled
-        type: Update
-      - !type:ModifyStatusEffect
-        effectProto: StatusEffectWoozy
-        time: 20.0
+      - !type:EvenHealthChange
+        conditions:
+        - !type:TemperatureCondition
+          # this is a little arbitrary but they gotta be pretty cold
+          max: 213.0
+        damage:
+          # todo scale with temp like SS13
+          Airloss: -3
+          Brute: -2
+          Burn: -2
+          Toxin: -2

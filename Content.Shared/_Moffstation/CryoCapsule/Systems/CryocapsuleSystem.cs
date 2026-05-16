@@ -9,28 +9,28 @@ namespace Content.Shared._Moffstation.CryoCapsule.Systems;
 /// <summary>
 /// This handles...
 /// </summary>
-public sealed class CryocapsuleSystem : EntitySystem
+public abstract class SharedCryocapsuleSystem : EntitySystem
 {
     [Dependency] private readonly ReachableOrgansSystem _reachableOrgans = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
     {
-        SubscribeLocalEvent<CryocapsuleComponent, LockToggledEvent>(OnLockToggled);
+        SubscribeLocalEvent<CryoCapsuleComponent, LockToggledEvent>(OnLockToggled);
 
         SubscribeLocalEvent<CryocapsuleAirComponent, ComponentStartup>(OnAirStartup);
 
     }
 
-    private void OnLockToggled(Entity<CryocapsuleComponent> ent, ref LockToggledEvent ev)
+    private void OnLockToggled(Entity<CryoCapsuleComponent> ent, ref LockToggledEvent ev)
     {
         if (ev.Locked)
         {
-            _reachableOrgans.TryUnexpose(ent.Owner, CryocapsuleComponent.OrganGroupName);
+            _reachableOrgans.TryUnexpose(ent.Owner, CryoCapsuleComponent.OrganGroupName);
         }
         else
         {
-            _reachableOrgans.TryExpose(ent.Owner, CryocapsuleComponent.OrganGroupName);
+            _reachableOrgans.TryExpose(ent.Owner, CryoCapsuleComponent.OrganGroupName);
         }
     }
 

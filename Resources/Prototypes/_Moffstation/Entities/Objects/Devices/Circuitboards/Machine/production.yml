@@ -23,3 +23,17 @@
   components:
   - type: MachineBoard
     prototype: WeaponCapacitorRechargerPirate
+
+- type: entity
+  id: CryoLifeSupportMachineCircuitboard
+  parent: BaseMachineCircuitboard
+  name: cryo life support machine board
+  description: A machine printed circuit board for a cryogenic life support machine.
+  components:
+  - type: Sprite
+    state: medical
+  - type: MachineBoard
+    prototype: CryoLifeSupportMachine
+    stackRequirements:
+      Glass: 5
+      Cable: 1

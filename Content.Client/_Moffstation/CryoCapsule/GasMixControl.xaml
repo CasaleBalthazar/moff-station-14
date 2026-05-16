@@ -1,0 +1,36 @@
+<controls:GasMixControl
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client._Moffstation.CryoCapsule"
+    xmlns:controls1="clr-namespace:Content.Client.UserInterface.Controls">
+
+    <BoxContainer Orientation="Vertical">
+        <Label Text = "Atmosphere :"/>
+
+        <BoxContainer Orientation="Horizontal"
+                      SeparationOverride="20"
+                      Margin="0 0 0 4">
+            <!-- Pressure -->
+            <BoxContainer Orientation="Vertical">
+                <Label Text="{Loc 'cryo-life-support-window-pressure-text'}"
+                       StyleClasses="LabelSubText"/>
+                <Label Name="Pressure"/>
+            </BoxContainer>
+
+            <!-- Temperature -->
+            <BoxContainer Orientation="Vertical">
+                <Label Text="{Loc 'cryo-life-support-window-temperature-text'}"
+                       StyleClasses="LabelSubText"/>
+                <Label Name="Temperature"/>
+            </BoxContainer>
+        </BoxContainer>
+
+        <!-- Gas mix -->
+        <Control Margin="0 0 0 22">
+            <controls1:SplitBar Name="GasMixChart"
+                                MinHeight="8"
+                                MaxHeight="8"/>
+        </Control>
+
+    </BoxContainer>
+
+</controls:GasMixControl>

@@ -1,0 +1,54 @@
+<controls:SolutionInjectorControl
+    xmlns="https://spacestation14.io"
+    xmlns:controls="clr-namespace:Content.Client._Moffstation.CryoCapsule"
+    xmlns:cryogenics="clr-namespace:Content.Client.Medical.Cryogenics">
+
+    <BoxContainer Orientation="Vertical">
+
+        <Label Text = "Injector :"/>
+            <Control HorizontalExpand="True"
+                     MinHeight="30">
+                <Label Name="NoBeakerText"
+                       Text="{Loc 'cryomachine-window-no-beaker'}"
+                       FontColorOverride="Gray"
+                       VerticalExpand="True"
+                       VAlign="Center"/>
+                <cryogenics:BeakerBarChart Name="ChemicalsChart"
+                                           HorizontalExpand="True"
+                                           VerticalExpand="True"/>
+            </Control>
+
+            <!-- Buttons -->
+            <BoxContainer Orientation="Vertical"
+                          Margin="-2 2 -2 0">
+                <BoxContainer Orientation="Horizontal">
+                    <Button Name="Inject1"
+                            Text="{Loc 'cryo-pod-window-inject-1u'}"
+                            Disabled="True"
+                            HorizontalExpand="True"
+                            StyleClasses="OpenBoth"/>
+                    <Button Name="Inject5"
+                            Text="{Loc 'cryo-pod-window-inject-5u'}"
+                            Disabled="True"
+                            HorizontalExpand="True"
+                            StyleClasses="OpenBoth"/>
+                    <Button Name="Inject10"
+                            Text="{Loc 'cryo-pod-window-inject-10u'}"
+                            Disabled="True"
+                            HorizontalExpand="True"
+                            StyleClasses="OpenBoth"/>
+                    <Button Name="Inject20"
+                            Text="{Loc 'cryo-pod-window-inject-20u'}"
+                            Disabled="True"
+                            HorizontalExpand="True"
+                            StyleClasses="OpenBoth"/>
+                    <Button Name="EjectBeakerButton"
+                            Text="{Loc 'cryo-pod-window-eject-beaker'}"
+                            Disabled="True"
+                            StyleClasses="OpenBoth"/>
+                </BoxContainer>
+            </BoxContainer>
+
+    </BoxContainer>
+
+</controls:SolutionInjectorControl>

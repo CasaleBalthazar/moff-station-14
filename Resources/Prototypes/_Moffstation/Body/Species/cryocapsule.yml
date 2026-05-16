@@ -109,6 +109,8 @@
   - type: Cryocapsule
   # feature : cannot be injected, healed by topical or defibrillator.
   - type: HealBlocker
+  # feature : can be treated via a cryogenic life support machine
+  - type: FitsInCryoLifeSupport
 
   - type: Lock
     unlockOnClick: false

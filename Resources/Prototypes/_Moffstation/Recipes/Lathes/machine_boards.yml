@@ -1,3 +1,8 @@
+- type: latheRecipe
+  parent: [ BaseGoldCircuitboardRecipe, BaseMedicalMachineRecipeCategory ]
+  id: CryoLifeSupportMachineCircuitboard
+  result: CryoLifeSupportMachineCircuitboard
+
 # Categories
 
 - type: latheRecipe

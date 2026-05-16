@@ -125,6 +125,7 @@
   - CryoPodMachineCircuitboard
   - CryostasisBeaker
   - SyringeCryostasis
+  - CryoLifeSupportMachineCircuitboard # Moffstation
 
 - type: technology # Merge with other T2 medical research if possible!
   id: MechanizedTreatment
@@ -242,7 +243,7 @@
   cost: 10000
   recipeUnlocks:
   - BluespaceBeaker
-  - SyringeBluespace 
+  - SyringeBluespace
   - BluespaceVial # Moffstation - Bluespace Vial
 
 - type: technology

@@ -1,3 +1,4 @@
+using Content.Shared._Moffstation.Medical.Healing;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
@@ -191,6 +192,30 @@ public sealed class HealingSystem : EntitySystem
 
         if (TryComp<StackComponent>(healing, out var stack) && stack.Count < 1)
             return false;
+
+        // Moffstation - Begin - allow target or user to cancel heal attempt
+        var selfEv = new SelfBeforeHealEvent(user, healing, target);
+        RaiseLocalEvent(user, selfEv);
+
+        if (selfEv.Cancelled)
+        {
+            // Clowns will now also fumble Syringes.
+            if (selfEv.OverrideMessage != null)
+                _popupSystem.PopupPredicted(selfEv.OverrideMessage, user, user);
+            return true;
+        }
+
+        var ev = new TargetBeforeHealEvent(user, healing, target);
+        RaiseLocalEvent(target, ref ev);
+
+        if (ev.Cancelled)
+        {
+            var userMessage = Loc.GetString("injector-component-blocked-user");
+            var otherMessage = Loc.GetString("injector-component-blocked-other", ("target", target), ("user", user));
+            _popupSystem.PopupPredicted(userMessage, otherMessage, target, user, PopupType.SmallCaution);
+            return true;
+        }
+        // Moffstation - End
 
         if (!HasDamage(healing, target!))
         {

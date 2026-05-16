@@ -1,0 +1,9 @@
+# Cause you to speak like a slime. Blump ?
+- type: entity
+  parent: SpeechStatusEffectBase
+  id: StatusEffectSlimeSpeech
+  name: slime speech
+  components:
+  - type: ReplacementAccent
+    accent: slimes
+

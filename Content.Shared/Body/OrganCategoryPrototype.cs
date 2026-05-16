@@ -8,6 +8,11 @@ namespace Content.Shared.Body;
 [Prototype]
 public sealed partial class OrganCategoryPrototype : IPrototype
 {
+    // Moffstation - Begin
+    [DataField]
+    public string Name = string.Empty;
+    // Moffstation - End
+
     [IdDataField]
     public string ID { get; private set; } = default!;
 }

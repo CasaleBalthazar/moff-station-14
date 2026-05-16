@@ -1,0 +1,239 @@
+## Appearance
+
+- type: entity
+  abstract: true
+  id: AppearanceCryoCapsule
+  components:
+  - type: Sprite
+    sprite: _Moffstation/Mobs/Species/CryogenicCapsule/parts.rsi
+    layers:
+    # Torso
+    - map: [ "enum.HumanoidVisualLayers.Chest" ]
+      state: capsule
+    # Torso - Internal Organs
+
+    - map: [ "enum.HumanoidExposableLayers.Kidneys" ]
+    - map: [ "enum.HumanoidExposableLayers.Liver" ]
+    - map: [ "enum.HumanoidExposableLayers.Stomach" ]
+    - map: [ "enum.HumanoidExposableLayers.Appendix" ]
+    - map: [ "enum.HumanoidExposableLayers.Lungs" ]
+    - map: [ "enum.HumanoidExposableLayers.Heart" ]
+
+    # Head
+    - map: [ "enum.HumanoidVisualLayers.Eyes" ] # avoid error due to missing layers
+
+    # Head - Internal Organs
+
+    - map: [ "enum.HumanoidExposableLayers.Ears" ]
+    - map: [ "enum.HumanoidExposableLayers.Brain" ]
+    - map: [ "enum.HumanoidExposableLayers.Eyes" ]
+    - map: [ "enum.HumanoidExposableLayers.Tongue" ]
+
+    # Limbs
+    - map: [ "enum.HumanoidVisualLayers.RArm" ]
+    - map: [ "enum.HumanoidVisualLayers.LArm" ]
+    - map: [ "enum.HumanoidVisualLayers.RLeg" ]
+    - map: [ "enum.HumanoidVisualLayers.LLeg" ]
+
+    # Underwear & clothing
+    - map: ["jumpsuit"]
+
+    # Extremities
+    - map: ["enum.HumanoidVisualLayers.LFoot"]
+    - map: ["enum.HumanoidVisualLayers.RFoot"]
+    - map: ["enum.HumanoidVisualLayers.LHand"]
+    - map: ["enum.HumanoidVisualLayers.RHand"]
+
+    # Stuff that goes over the body but below equipment
+    - map: ["enum.HumanoidVisualLayers.Overlay"]
+
+    # More equipment
+    - map: [ "gloves" ]
+    - map: [ "shoes" ]
+    - map: [ "ears" ]
+    - map: [ "eyes" ]
+    #    - map: [ "belt" ] # Moffstation - Belts over outerwear
+    - map: [ "id" ]
+    - map: [ "outerClothing" ]
+    - map: [ "belt" ] # Moffstation - Belts over outerwear
+    - map: [ "back" ]
+    - map: [ "neck" ]
+    - map: [ "suitstorage" ]
+
+    # Stuff that goes in front of equipment
+    - map: [ "enum.HumanoidVisualLayers.SnoutCover" ]
+    - map: [ "enum.HumanoidVisualLayers.FacialHair" ]
+    - map: [ "enum.HumanoidVisualLayers.Hair" ]
+    - map: [ "enum.HumanoidVisualLayers.HeadSide" ]
+    - map: [ "enum.HumanoidVisualLayers.HeadTop" ]
+    - map: [ "enum.HumanoidVisualLayers.Tail" ]
+    - map: [ "enum.HumanoidVisualLayers.TailOverlay" ]
+
+    # Stuff that goes in front of stuff that goes in front of equipment
+    - map: [ "mask" ]
+    - map: [ "head" ]
+    - map: [ "pocket1" ]
+    - map: [ "pocket2" ]
+
+    # Extra stuff
+    - map: ["enum.HumanoidVisualLayers.Handcuffs"]
+      color: "#ffffff"
+      sprite: Objects/Misc/handcuffs.rsi
+      state: body-overlay-2
+      visible: false
+
+
+## Mob (Capsule)
+- type: entity
+  parent:
+  - AppearanceCryoCapsule
+  - BaseControllable
+  - BaseItem
+  - MobRespirator
+  - MobBloodstream
+  - MobDamageable
+  id: MobCryoCapsule
+  name: cryogenic capsule
+  description: a miniature cryo-pod able to keep organs alive in absence of a body.
+  components:
+
+  # item
+  - type: Item
+    size: Ginormous
+  - type: MultiHandedItem
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
+
+  - type: Cryocapsule
+  # feature : cannot be injected, healed by topical or defibrillator.
+  - type: HealBlocker
+
+  - type: Lock
+    unlockOnClick: false
+  - type: AccessReader
+    accessLists: [ "Medical" ]
+
+  # body profile
+  - type: Body
+  # body feature : internal organs can be seen
+  - type: DisplayableOrgans
+    organGroups:
+      capsule:
+        displayed: true
+        categories:
+        - Brain
+        - Eyes
+        - Tongue
+        - Ears
+        - Heart
+        - Lungs
+        - Stomach
+        - Liver
+        - Kidneys
+        - Appendix
+  # body feature : internal organs can be placed and removed (when unlocked)
+  - type: ReachableOrgans
+    insertSound: /Audio/Voice/Slime/slime_squish.ogg
+    ejectSound: /Audio/Voice/Slime/slime_squish.ogg
+    organGroups:
+      capsule:
+        exposed: false
+        categories:
+        - Brain
+        - Eyes
+        - Tongue
+        - Ears
+        - Heart
+        - Lungs
+        - Stomach
+        - Liver
+        - Kidneys
+        - Appendix
+  # body feature : presence / absence of organs affect body functions
+  - type: FunctionalOrgans
+    organGroups:
+      vitals: # you can't be alive when absent
+        categories:
+        - Brain
+        - Heart
+        - Lungs
+        appliedWhenAbsent:
+        - StatusEffectForcedDeath
+        appliedWhenPresent: []
+      speech: # you can't speak properly when absent
+        categories:
+        - Tongue
+        appliedWhenAbsent:
+        - StatusEffectSlimeSpeech
+        appliedWhenPresent: []
+      vision: # you can't see when absent
+        categories:
+        - Eyes
+        appliedWhenAbsent: [] # todo ! StatusEffectBlindness
+        appliedWhenPresent: []
+      purification: # your body cannot treat wastes, slowly poisonning you
+        categories:
+        - Kidneys
+        - Liver
+        appliedWhenAbsent: [] # todo !
+        appliedWhenPresent: []
+
+  # blood feature
+  - type: Bloodstream
+    bloodReferenceSolution: Cryoformol
+    bleedReductionAmount: 0 # outer layer is not skin and won't heal naturally
+    bloodRefreshAmount: 0   # body don't produce cryoformol naturally
+
+  # damage profile
+  - type: Damageable # your capsule is made of glass
+    damageContainer: Biological
+    damageModifierSet: Glass
+  - type: Destructible
+    thresholds:
+    - trigger: # breaking your capsule will gib you instantly (200 blunt)
+        !type:DamageTypeTrigger
+        damageType: Blunt
+        damage: 200
+      behaviors:
+      - !type:GibBehavior { }
+      - !type:PlaySoundBehavior
+        sound:
+          collection: WindowShatter
+      - !type:EmptyAllContainersBehaviour
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Heat
+        damage: 1500
+      behaviors:
+      - !type:SpawnEntitiesBehavior
+        spawnInContainer: true
+        spawn:
+          Ash:
+            min: 1
+            max: 1
+      - !type:BurnBodyBehavior
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MeatLaserImpact
+    - trigger:
+        !type:DamageTypeTrigger
+        damageType: Radiation
+        damage: 15
+      behaviors:
+      - !type:PopupBehavior
+        popup: mouth-taste-metal
+        popupType: LargeCaution
+        targetOnly: true
+
+  # speech profile
+  - type: Speech
+    speechVerb: Slime
+    speechSounds: Slime
+    allowedEmotes: [ 'Squish' ]
+  - type: TypingIndicator
+    proto: slime
+  - type: Vocal
+    sounds:
+      Unsexed: MaleSlime

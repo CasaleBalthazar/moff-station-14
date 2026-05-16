@@ -1,0 +1,7 @@
+# the creature is dead an unrevivable
+- type: entity
+  parent: MobStatusEffectDebuff
+  id: StatusEffectForcedDeath
+  name: forced death
+  components:
+  - type: ForcedDeathStatusEffect

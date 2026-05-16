@@ -1,4 +1,6 @@
 using System.Linq;
+using Content.Shared._Moffstation.Body.Components; // Moffstation
+using Content.Shared._Moffstation.Body.Events; // Moffstation
 using Content.Shared.Body;
 using Content.Shared.CCVar;
 using Content.Shared.Humanoid.Markings;
@@ -21,6 +23,11 @@ public sealed class VisualBodySystem : SharedVisualBodySystem
     public override void Initialize()
     {
         base.Initialize();
+
+        // Moffstation - Begin
+        SubscribeLocalEvent<DisplayVisualOrganComponent, OrganGotDisplayedEvent>(OnOrganGotDisplayed);
+        SubscribeLocalEvent<DisplayVisualOrganComponent, OrganGotHiddenEvent>(OnOrganGotHidden);
+        // Moffstation - End
 
         SubscribeLocalEvent<VisualOrganComponent, OrganGotInsertedEvent>(OnOrganGotInserted);
         SubscribeLocalEvent<VisualOrganComponent, OrganGotRemovedEvent>(OnOrganGotRemoved);
@@ -48,6 +55,45 @@ public sealed class VisualBodySystem : SharedVisualBodySystem
             ApplyMarkings((ent, markingsComp), body);
         }
     }
+
+    // Moffstation - Begin
+    private void OnOrganGotDisplayed(Entity<DisplayVisualOrganComponent> ent, ref OrganGotDisplayedEvent args)
+    {
+        ApplyExposedVisual(ent, args.Target);
+
+        if (!TryComp<VisualOrganComponent>(ent, out var visual))
+            return;
+
+        RemoveVisual((ent, visual), args.Target);
+    }
+
+    private void OnOrganGotHidden(Entity<DisplayVisualOrganComponent> ent, ref OrganGotHiddenEvent args)
+    {
+        RemoveExposedVisual(ent, args.Target);
+
+        if (!TryComp<VisualOrganComponent>(ent, out var visual))
+            return;
+
+        ApplyVisual((ent, visual), args.Target);
+    }
+
+    private void ApplyExposedVisual(Entity<DisplayVisualOrganComponent> ent, EntityUid target)
+    {
+        if (!_sprite.LayerMapTryGet(target, ent.Comp.Layer, out var index, true))
+            return;
+
+        _sprite.LayerSetData(target, index, ent.Comp.Data);
+    }
+
+    private void RemoveExposedVisual(Entity<DisplayVisualOrganComponent> ent, EntityUid target)
+    {
+        if (!_sprite.LayerMapTryGet(target, ent.Comp.Layer, out var index, true))
+            return;
+
+        _sprite.LayerSetRsiState(target, index, RSI.StateId.Invalid);
+    }
+
+    // Moffstation - End
 
     private void OnOrganGotInserted(Entity<VisualOrganComponent> ent, ref OrganGotInsertedEvent args)
     {

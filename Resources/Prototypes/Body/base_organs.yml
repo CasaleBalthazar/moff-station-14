@@ -259,6 +259,13 @@
     entries:
       Burger: Brain
       Taco: Brain
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Brain
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: brain
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -282,6 +289,13 @@
     markingData:
       layers:
       - Eyes
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Eyes
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: eyes
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -295,6 +309,13 @@
   - type: Sprite
     layers:
     - state: tongue
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Tongue
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: tongue
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -308,6 +329,13 @@
   - type: Sprite
     layers:
     - state: appendix
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Appendix
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: appendix
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -321,6 +349,13 @@
   - type: Sprite
     layers:
     - state: ears
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Ears
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: ears
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -345,6 +380,13 @@
     - state: lung-r
   - type: Item
     heldPrefix: lungs
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Lungs
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: lungs
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -361,6 +403,13 @@
   - type: Metabolizer
     maxReagents: 2
     stages: [ Bloodstream ]
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Heart
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: heart
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -384,6 +433,13 @@
     - state: stomach
   - type: Item
     heldPrefix: stomach
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Stomach
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: stomach
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -402,6 +458,13 @@
   - type: Metabolizer
     maxReagents: 1
     stages: [ Metabolites ]
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Liver
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: liver
+  # Moffstation - end
 
 - type: entity
   parent: OrganBase
@@ -420,6 +483,13 @@
     heldPrefix: kidneys
   - type: Metabolizer
     maxReagents: 5
+  # Moffstation - begin
+  - type: DisplayVisualOrgan
+    layer: enum.HumanoidExposableLayers.Kidneys
+    data:
+      sprite: _Moffstation/Mobs/Species/Human/exposed_organs.rsi
+      state: kidneys
+  # Moffstation - end
 
 - type: entity
   id: OrganSpriteHumanInternal

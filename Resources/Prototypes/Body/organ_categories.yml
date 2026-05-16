@@ -1,59 +1,79 @@
 - type: organCategory
+  name: Torso # Moffstation
   id: Torso
 
 - type: organCategory
+  name: Head # Moffstation
   id: Head
 
 - type: organCategory
+  name: Left Arm # Moffstation
   id: ArmLeft
 
 - type: organCategory
+  name: Right Arm # Moffstation
   id: ArmRight
 
 - type: organCategory
+  name: Right Hand # Moffstation
   id: HandRight
 
 - type: organCategory
+  name: Left Hand # Moffstation
   id: HandLeft
 
 - type: organCategory
+  name: Left Leg # Moffstation
   id: LegLeft
 
 - type: organCategory
+  name: Right Leg # Moffstation
   id: LegRight
 
 - type: organCategory
+  name: Left Foot # Moffstation
   id: FootLeft
 
 - type: organCategory
+  name: Right Foot # Moffstation
   id: FootRight
 
 - type: organCategory
+  name: Brain # Moffstation
   id: Brain
 
 - type: organCategory
+  name: Eyes # Moffstation
   id: Eyes
 
 - type: organCategory
+  name: Tongue # Moffstation
   id: Tongue
 
 - type: organCategory
+  name: Appendix # Moffstation
   id: Appendix
 
 - type: organCategory
+  name: Ears # Moffstation
   id: Ears
 
 - type: organCategory
+  name: Lungs # Moffstation
   id: Lungs
 
 - type: organCategory
+  name: Heart # Moffstation
   id: Heart
 
 - type: organCategory
+  name: Stomach # Moffstation
   id: Stomach
 
 - type: organCategory
+  name: Liver # Moffstation
   id: Liver
 
 - type: organCategory
+  name: Kidneys # Moffstation
   id: Kidneys

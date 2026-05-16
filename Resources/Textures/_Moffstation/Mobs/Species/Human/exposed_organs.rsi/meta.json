@@ -1,0 +1,51 @@
+{
+    "version": 1,
+    "license": "CC-BY-SA-4.0",
+    "copyright": "created by CasaleBalthazar (GitHub)",
+    "size": {
+        "x": 32,
+        "y": 32
+    },
+    "states": [
+        {
+            "name": "brain",
+            "directions": 4
+        },
+        {
+            "name": "eyes",
+            "directions": 4
+        },
+        {
+            "name": "ears",
+            "directions": 4
+        },
+        {
+            "name": "tongue",
+            "directions": 4
+        },
+        {
+            "name": "stomach",
+            "directions": 4
+        },
+        {
+            "name": "lungs",
+            "directions": 4
+        },
+        {
+            "name": "heart",
+            "directions": 4
+        },
+        {
+            "name": "appendix",
+            "directions": 4
+        },
+        {
+            "name": "kidneys",
+            "directions": 4
+        },
+        {
+            "name": "liver",
+            "directions": 4
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 <controls:FancyWindow xmlns="https://spacestation14.io"
                xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
-               xmlns:cryoCapsule="clr-namespace:Content.Client._Moffstation.CryoCapsule"
+               xmlns:cryoCapsule="clr-namespace:Content.Client._Moffstation.CryoCapsule.Ui"
                MinSize="250 300"
                Resizable="True">
     <BoxContainer Orientation="Vertical">

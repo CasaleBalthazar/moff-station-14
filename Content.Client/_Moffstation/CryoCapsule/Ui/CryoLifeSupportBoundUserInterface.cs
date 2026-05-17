@@ -1,7 +1,7 @@
 using Content.Shared._Moffstation.CryoCapsule.Components;
 using Robust.Client.UserInterface;
 
-namespace Content.Client._Moffstation.CryoCapsule;
+namespace Content.Client._Moffstation.CryoCapsule.Ui;
 
 public sealed class CryoLifeSupportBoundUserInterface : BoundUserInterface
 {

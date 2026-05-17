@@ -106,7 +106,7 @@
     sprintModifier: 0.9
   - type: HeldSpeedModifier
 
-  - type: Cryocapsule
+  - type: CryoCapsule
   # feature : cannot be injected, healed by topical or defibrillator.
   - type: HealBlocker
   # feature : can be treated via a cryogenic life support machine

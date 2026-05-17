@@ -5,7 +5,7 @@ using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
 
-namespace Content.Client._Moffstation.CryoCapsule;
+namespace Content.Client._Moffstation.CryoCapsule.Ui;
 
 [GenerateTypedNameReferences]
 public sealed partial class SolutionInjectorControl : Control

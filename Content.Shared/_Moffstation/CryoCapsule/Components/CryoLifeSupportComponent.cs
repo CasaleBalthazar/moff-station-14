@@ -3,6 +3,7 @@ using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.FixedPoint;
 using Content.Shared.MedicalScanner;
+using Robust.Shared.Audio;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._Moffstation.CryoCapsule.Components;
@@ -13,12 +14,38 @@ namespace Content.Shared._Moffstation.CryoCapsule.Components;
 [RegisterComponent]
 public sealed partial class CryoLifeSupportComponent : Component
 {
+    /// <summary>
+    /// Item slot containing the capsule
+    /// </summary>
     [DataField]
-    public ItemSlot? CapsuleSlot;
+    public ItemSlot CapsuleSlot = new();
+
+    /// <summary>
+    /// Item slot containing a beaker for injecting the patient
+    /// </summary>
+    [DataField]
+    public ItemSlot BeakerSlot = new();
+
+    /// <summary>
+    /// Sound that will be played when reviving the patient
+    /// </summary>
+    [DataField]
+    public SoundSpecifier? ZapSound = new SoundPathSpecifier("/Audio/Effects/tesla_consume.ogg");
+
+    /// <summary>
+    /// Sound that will be played when injecting the patient
+    /// </summary>
+    [DataField]
+    public SoundSpecifier? InjectSound;
+
+    /// <summary>
+    /// Time span between two consecutive UI updates
+    /// </summary>
+    [DataField]
+    public TimeSpan UiUpdateInterval = TimeSpan.FromSeconds(0.5);
 
     [DataField]
-    public ItemSlot? BeakerSlot;
-
+    public TimeSpan NextUiUpdate =  TimeSpan.Zero;
 
 }
 

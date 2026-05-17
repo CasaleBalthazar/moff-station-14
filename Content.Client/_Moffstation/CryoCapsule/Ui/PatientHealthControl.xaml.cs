@@ -20,7 +20,7 @@ using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
-namespace Content.Client._Moffstation.CryoCapsule;
+namespace Content.Client._Moffstation.CryoCapsule.Ui;
 
 [GenerateTypedNameReferences]
 public sealed partial class PatientHealthControl : Control
@@ -61,7 +61,7 @@ public void Populate(HealthAnalyzerUiState state)
         // Patient Information
 
         SpriteView.SetEntity(target.Value);
-        SpriteView.Visible = state.ScanMode.HasValue && state.ScanMode.Value;
+        SpriteView.Visible = true;
         NoDataTex.Visible = !SpriteView.Visible;
 
         var name = new FormattedMessage();

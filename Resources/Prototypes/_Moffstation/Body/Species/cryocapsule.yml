@@ -52,10 +52,9 @@
     - map: [ "shoes" ]
     - map: [ "ears" ]
     - map: [ "eyes" ]
-    #    - map: [ "belt" ] # Moffstation - Belts over outerwear
     - map: [ "id" ]
     - map: [ "outerClothing" ]
-    - map: [ "belt" ] # Moffstation - Belts over outerwear
+    - map: [ "belt" ]
     - map: [ "back" ]
     - map: [ "neck" ]
     - map: [ "suitstorage" ]

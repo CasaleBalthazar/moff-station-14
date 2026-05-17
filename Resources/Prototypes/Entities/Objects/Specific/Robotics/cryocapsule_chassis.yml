@@ -1,0 +1,59 @@
+- type: entity
+  id: BaseCryoCapsuleChassis
+  save: false
+  abstract: true
+  components:
+  - type: AirFilter # todo : change this to act as a regular ol' gas filter.
+    # everything except oxygen and nitrogen
+    gases:
+    - CarbonDioxide
+    - Plasma
+    - Tritium
+    - WaterVapor
+    - Ammonia
+    - NitrousOxide
+    - Frezon
+    #- Helium3 TODO: fusion
+    # remove everything except oxygen to maintain oxygen ratio
+    overflowGases:
+    - Nitrogen
+    - CarbonDioxide
+    - Plasma
+    - Tritium
+    - WaterVapor
+    - Ammonia
+    - NitrousOxide
+    - Frezon
+    #- Helium3 TODO: fusion
+  - type: AtmosDevice # for filter to work
+    requireAnchored: false
+    joinSystem: true
+
+  - type: MobMover
+  - type: InputMover
+  - type: InteractionOutline
+
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+    - FootstepSound
+  - type: Pullable
+  - type: Physics
+    bodyType: KinematicController
+  - type: GravityAffected
+  - type: Clickable
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.45
+        density: 1000
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+
+  - type: FootstepModifier
+    footstepSoundCollection:
+      path: /Audio/Mecha/mechmove03.ogg

@@ -1,4 +1,6 @@
 using Content.Shared.Atmos;
+using Content.Shared.Containers.ItemSlots;
+using Robust.Shared.Containers;
 
 namespace Content.Shared._Moffstation.CryoCapsule.Components;
 
@@ -24,4 +26,10 @@ public sealed partial class CryoCapsuleComponent : Component
     /// </summary>
     [DataField]
     public GasMixture Air = new GasMixture();
+
+    /// <summary>
+    /// Slot able to contain a chassis <see cref="CryoCapsuleChassisComponent"/>
+    /// </summary>
+    [DataField]
+    public ItemSlot ChassisSlot = new();
 }

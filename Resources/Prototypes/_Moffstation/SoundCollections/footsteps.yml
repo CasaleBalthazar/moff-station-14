@@ -1,0 +1,4 @@
+- type: soundCollection
+  id: FootstepMetallic
+  files:
+  - /Audio/_Moffstation/Effects/Footsteps/metallic1.ogg

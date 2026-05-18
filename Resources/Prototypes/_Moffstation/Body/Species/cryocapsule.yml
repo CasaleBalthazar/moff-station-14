@@ -1,5 +1,4 @@
 ## Appearance
-
 - type: entity
   abstract: true
   id: AppearanceCryoCapsule
@@ -7,11 +6,9 @@
   - type: Sprite
     sprite: _Moffstation/Mobs/Species/CryogenicCapsule/parts.rsi
     layers:
-    # Torso
     - map: [ "enum.HumanoidVisualLayers.Chest" ]
       state: capsule
     # Torso - Internal Organs
-
     - map: [ "enum.HumanoidExposableLayers.Kidneys" ]
     - map: [ "enum.HumanoidExposableLayers.Liver" ]
     - map: [ "enum.HumanoidExposableLayers.Stomach" ]
@@ -29,6 +26,7 @@
     - map: [ "enum.HumanoidExposableLayers.Eyes" ]
     - map: [ "enum.HumanoidExposableLayers.Tongue" ]
 
+    - map: [ "enum.HumanoidVisualLayers.Overlay" ]
     # Limbs
     - map: [ "enum.HumanoidVisualLayers.RArm" ]
     - map: [ "enum.HumanoidVisualLayers.LArm" ]
@@ -44,17 +42,15 @@
     - map: ["enum.HumanoidVisualLayers.LHand"]
     - map: ["enum.HumanoidVisualLayers.RHand"]
 
-    # Stuff that goes over the body but below equipment
-    - map: ["enum.HumanoidVisualLayers.Overlay"]
-
     # More equipment
     - map: [ "gloves" ]
     - map: [ "shoes" ]
     - map: [ "ears" ]
     - map: [ "eyes" ]
+    #    - map: [ "belt" ] # Moffstation - Belts over outerwear
     - map: [ "id" ]
     - map: [ "outerClothing" ]
-    - map: [ "belt" ]
+    - map: [ "belt" ] # Moffstation - Belts over outerwear
     - map: [ "back" ]
     - map: [ "neck" ]
     - map: [ "suitstorage" ]
@@ -80,7 +76,6 @@
       sprite: Objects/Misc/handcuffs.rsi
       state: body-overlay-2
       visible: false
-
 
 ## Mob (Capsule)
 - type: entity
@@ -180,6 +175,18 @@
         - Liver
         appliedWhenAbsent: [] # todo !
         appliedWhenPresent: []
+
+  # body feature : can be installed inside a cryogenic capsule chassis
+  - type: ContainerContainer
+    containers:
+      capsule_chassis:
+        !type:ContainerSlot
+  - type: ItemSlots
+    slots:
+      capsule_chassis:
+        whitelist:
+          components:
+          - CryoCapsuleChassis
 
   # blood feature
   - type: Bloodstream

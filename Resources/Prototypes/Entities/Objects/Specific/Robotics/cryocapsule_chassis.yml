@@ -1,59 +1,134 @@
+## visual layers
+
 - type: entity
-  id: BaseCryoCapsuleChassis
-  save: false
-  abstract: true
+  id: CryoCapsuleChassis
+  name: cryogenic capsule chassis
+  description: A frame with arms and legs.
   components:
-  - type: AirFilter # todo : change this to act as a regular ol' gas filter.
-    # everything except oxygen and nitrogen
-    gases:
-    - CarbonDioxide
-    - Plasma
-    - Tritium
-    - WaterVapor
-    - Ammonia
-    - NitrousOxide
-    - Frezon
-    #- Helium3 TODO: fusion
-    # remove everything except oxygen to maintain oxygen ratio
-    overflowGases:
-    - Nitrogen
-    - CarbonDioxide
-    - Plasma
-    - Tritium
-    - WaterVapor
-    - Ammonia
-    - NitrousOxide
-    - Frezon
-    #- Helium3 TODO: fusion
-  - type: AtmosDevice # for filter to work
-    requireAnchored: false
-    joinSystem: true
-
-  - type: MobMover
-  - type: InputMover
-  - type: InteractionOutline
-
-  - type: Tag
-    tags:
-    - DoorBumpOpener
-    - FootstepSound
-  - type: Pullable
-  - type: Physics
-    bodyType: KinematicController
-  - type: GravityAffected
   - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: false
   - type: Fixtures
     fixtures:
       fix1:
         shape:
-          !type:PhysShapeCircle
-          radius: 0.45
-        density: 1000
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        density: 100
         mask:
         - MobMask
         layer:
         - MobLayer
+        restitution: 0.3
+        friction: 0.2
+  - type: Sprite
+    noRot: true
+    drawdepth: Items
+    sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+    state: chassis
+  - type: Pullable
 
-  - type: FootstepModifier
-    footstepSoundCollection:
-      path: /Audio/Mecha/mechmove03.ogg
+  - type: CryoCapsuleChassis
+    organs:
+    - OrganCryoCapsuleChassisArmLeft
+    - OrganCryoCapsuleChassisHandLeft
+    - OrganCryoCapsuleChassisArmRight
+    - OrganCryoCapsuleChassisHandRight
+    - OrganCryoCapsuleChassisLegLeft
+    - OrganCryoCapsuleChassisFootLeft
+    - OrganCryoCapsuleChassisLegRight
+    - OrganCryoCapsuleChassisFootRight
+
+
+## organs
+- type: entity
+  id: OrganCryoCapsuleChassisExternal
+  abstract: true
+  components:
+  - type: Sprite
+    sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+  - type: VisualOrganMarkings
+    markingData:
+      group: Arachnid # todo : change that
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseArmLeft ]
+  id: OrganCryoCapsuleChassisArmLeft
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.LArm
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: l_arm
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseArmRight ]
+  id: OrganCryoCapsuleChassisArmRight
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.RArm
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: r_arm
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseHandLeft ]
+  id: OrganCryoCapsuleChassisHandLeft
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.LHand
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: l_hand
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseHandRight ]
+  id: OrganCryoCapsuleChassisHandRight
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.RHand
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: r_hand
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseLegLeft ]
+  id: OrganCryoCapsuleChassisLegLeft
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.LLeg
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: l_leg
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseLegRight ]
+  id: OrganCryoCapsuleChassisLegRight
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.RLeg
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: r_leg
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseFootLeft ]
+  id: OrganCryoCapsuleChassisFootLeft
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.LFoot
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: l_foot
+
+- type: entity
+  parent: [ OrganCryoCapsuleChassisExternal, OrganBaseFootRight ]
+  id: OrganCryoCapsuleChassisFootRight
+  components:
+  - type: VisualOrgan
+    layer: enum.HumanoidVisualLayers.RFoot
+    data:
+      sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
+      state: r_foot

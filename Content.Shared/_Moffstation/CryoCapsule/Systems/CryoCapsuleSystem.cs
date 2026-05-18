@@ -1,7 +1,7 @@
-using Content.Shared._Moffstation.Body.Components;
 using Content.Shared._Moffstation.Body.Systems;
 using Content.Shared._Moffstation.CryoCapsule.Components;
 using Content.Shared.Atmos;
+using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Lock;
 
 namespace Content.Shared._Moffstation.CryoCapsule.Systems;
@@ -11,6 +11,7 @@ namespace Content.Shared._Moffstation.CryoCapsule.Systems;
 /// </summary>
 public abstract class SharedCryoCapsuleSystem : EntitySystem
 {
+    [Dependency] private readonly ItemSlotsSystem _slots= default!;
     [Dependency] private readonly ReachableOrgansSystem _reachableOrgans = default!;
 
     /// <inheritdoc/>
@@ -22,6 +23,9 @@ public abstract class SharedCryoCapsuleSystem : EntitySystem
 
     private void OnComponentInit(Entity<CryoCapsuleComponent> ent, ref ComponentInit args)
     {
+        if (_slots.TryGetSlot(ent, "capsule_chassis", out var chassisSlot))
+            ent.Comp.ChassisSlot = chassisSlot;
+
         ent.Comp.Air = new GasMixture(ent.Comp.AirVolume);
     }
 

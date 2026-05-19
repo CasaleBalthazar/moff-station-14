@@ -17,7 +17,7 @@
     - map: [ "enum.HumanoidExposableLayers.Heart" ]
 
     # Head
-    - map: [ "enum.HumanoidVisualLayers.Eyes" ] # avoid error due to missing layers
+    - map: [ "enum.HumanoidVisualLayers.Eyes" ] # avoid error due to missing layers (eyes are both visual and displayable)
 
     # Head - Internal Organs
 
@@ -82,7 +82,6 @@
   parent:
   - AppearanceCryoCapsule
   - BaseControllable
-  - BaseItem
   - MobRespirator
   - MobBloodstream
   - MobDamageable
@@ -90,15 +89,6 @@
   name: cryogenic capsule
   description: a miniature cryo-pod able to keep organs alive in absence of a body.
   components:
-
-  # item
-  - type: Item
-    size: Ginormous
-  - type: MultiHandedItem
-  - type: ClothingSpeedModifier
-    walkModifier: 0.9
-    sprintModifier: 0.9
-  - type: HeldSpeedModifier
 
   - type: CryoCapsule
   # feature : cannot be injected, healed by topical or defibrillator.
@@ -150,7 +140,7 @@
   # body feature : presence / absence of organs affect body functions
   - type: FunctionalOrgans
     organGroups:
-      vitals: # you can't be alive when absent
+      vitals: # can't live without them
         categories:
         - Brain
         - Heart
@@ -158,22 +148,28 @@
         appliedWhenAbsent:
         - StatusEffectForcedDeath
         appliedWhenPresent: []
-      speech: # you can't speak properly when absent
+      speech: # can't speak properly without them
         categories:
         - Tongue
         appliedWhenAbsent:
         - StatusEffectSlimeSpeech
         appliedWhenPresent: []
-      vision: # you can't see when absent
+      vision: # can't see without them
         categories:
         - Eyes
         appliedWhenAbsent: [] # todo ! StatusEffectBlindness
         appliedWhenPresent: []
-      purification: # your body cannot treat wastes, slowly poisoning you
+      purification: # can't treat waste without them
         categories:
         - Kidneys
         - Liver
         appliedWhenAbsent: [] # todo !
+        appliedWhenPresent: []
+      chassis: # you don't have a mobile body without it (but can be carried !)
+        categories:
+        - CryoCapsuleChassis
+        appliedWhenAbsent:
+        - CryoCapsuleItemStatusEffect
         appliedWhenPresent: []
 
   # body feature : can be installed inside a cryogenic capsule chassis
@@ -248,3 +244,77 @@
   - type: Vocal
     sounds:
       Unsexed: MaleSlime
+
+## States (item and mob)
+- type: entity
+  parent: [ StatusEffectBase ]
+  id: CryoCapsuleMobStatusEffect
+  components:
+  - type: AddParentStatusEffect
+    parents:
+    - CryoCapsuleMobState
+
+# components added when the capsule is inside a chassis
+# and can move on its own
+- type: entity
+  abstract: true
+  parent: [ BaseMob, MobCombat, StripableInventoryBase ]
+  id: CryoCapsuleMobState
+  components:
+  - type: MobCollision
+  - type: Physics
+    bodyType: KinematicController
+  - type: InputMover
+  - type: MobMover
+  - type: MovementSpeedModifier
+  - type: LagCompensation
+
+
+- type: entity
+  parent: [ StatusEffectBase ]
+  id: CryoCapsuleItemStatusEffect
+  components:
+  - type: AddParentStatusEffect
+    parents:
+    - CryoCapsuleItemState
+
+# components added when the capsule is not inside a chassis
+# and can be transported
+- type: entity
+  id: CryoCapsuleItemState
+  components:
+  - type: Item
+    size: Ginormous
+  - type: MultiHandedItem
+  - type: ClothingSpeedModifier
+    walkModifier: 0.9
+    sprintModifier: 0.9
+  - type: HeldSpeedModifier
+  - type: EmitSoundOnCollide
+    sound:
+      collection: WeakHit
+  - type: EmitSoundOnLand
+    sound:
+      path: /Audio/Effects/drop.ogg
+      params:
+        volume: 2
+  - type: DamageOnHighSpeedImpact
+    damage:
+      types:
+        Blunt: 5
+    soundHit:
+      collection: MetalThud
+  - type: CollisionWake
+  - type: GravityAffected
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: false
+  - type: Clickable
+  - type: InteractionOutline
+  - type: MovedByPressure
+
+# Organ Types
+
+- type: organCategory
+  name: Cryogenic capsule chassis
+  id: CryoCapsuleChassis

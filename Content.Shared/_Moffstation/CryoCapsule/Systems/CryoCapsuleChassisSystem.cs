@@ -1,4 +1,5 @@
 using Content.Shared._Moffstation.CryoCapsule.Components;
+using Content.Shared._Moffstation.CryoCapsule.Events;
 using Content.Shared.Chat;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Interaction;
@@ -26,21 +27,28 @@ public sealed class CryoCapsuleChassisSystem : EntitySystem
 
     // while it look like we insert the capsule inside the chassis in reality the
     // chassis is inserted inside the capsule.
-    private void OnInteractUsing(Entity<CryoCapsuleChassisComponent> ent, ref InteractUsingEvent ev)
+    private void OnInteractUsing(Entity<CryoCapsuleChassisComponent> ent, ref InteractUsingEvent args)
     {
-        if (!TryComp<CryoCapsuleComponent>(ev.Used, out var capsule) ||
+        if (!TryComp<CryoCapsuleComponent>(args.Used, out var capsule) ||
             capsule.ChassisSlot.Item is not null)
+            return;
+
+
+        var ev = new ChassisInsertAttemptEvent();
+        RaiseLocalEvent(args.Used, ev);
+
+        if (ev.Cancelled)
             return;
 
         var pos = _transform.GetWorldPosition(ent);
 
-        if (_container.IsEntityInContainer(ev.Used))
-            _container.TryRemoveFromContainer(ev.Used);
+        if (_container.IsEntityInContainer(args.Used))
+            _container.TryRemoveFromContainer(args.Used);
 
-        if (!_slots.TryInsert(ev.Used, capsule.ChassisSlot, ent.Owner, ev.User))
+        if (!_slots.TryInsert(args.Used, capsule.ChassisSlot, ent.Owner, args.User))
             return;
 
-        _transform.SetWorldPosition(ev.Used, pos);
+        _transform.SetWorldPosition(args.Used, pos);
 
     }
 

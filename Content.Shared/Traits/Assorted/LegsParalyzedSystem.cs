@@ -1,4 +1,5 @@
 ﻿using Content.Shared.Buckle.Components;
+using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Standing;
@@ -23,12 +24,22 @@ public sealed class LegsParalyzedSystem : EntitySystem
 
     private void OnStartup(EntityUid uid, LegsParalyzedComponent component, ComponentStartup args)
     {
+        // Moffstation - Begin
+        if (TryComp<MovementSpeedModifierComponent>(uid, out var mod))
+        {
+            component.WalkSpeed = mod.BaseWalkSpeed;
+            component.SprintSpeed = mod.BaseSprintSpeed;
+            component.Acceleration = mod.BaseAcceleration;
+        }
+        // Moffstation - End
+
         // TODO: In future probably must be surgery related wound
         _movementSpeedModifierSystem.ChangeBaseSpeed(uid, 0, 0, 20);
     }
 
     private void OnShutdown(EntityUid uid, LegsParalyzedComponent component, ComponentShutdown args)
     {
+        _movementSpeedModifierSystem.ChangeBaseSpeed(uid, component.WalkSpeed, component.SprintSpeed, component.Acceleration); // Moffstation
         _standingSystem.Stand(uid);
     }
 

@@ -22,7 +22,7 @@ public abstract class SharedCryoCapsuleSystem : EntitySystem
         SubscribeLocalEvent<CryoCapsuleComponent, ComponentInit>(OnComponentInit);
         SubscribeLocalEvent<CryoCapsuleComponent, LockToggledEvent>(OnLockToggled);
 
-        SubscribeLocalEvent<CryoCapsuleComponent, ChassisInsertAttemptEvent>(OnChassisInsertAttempt);
+        SubscribeLocalEvent<CryoCapsuleComponent, CryoCapsuleChassisInstallAttemptEvent>(OnChassisInsertAttempt);
     }
 
     private void OnComponentInit(Entity<CryoCapsuleComponent> ent, ref ComponentInit args)
@@ -45,12 +45,18 @@ public abstract class SharedCryoCapsuleSystem : EntitySystem
         }
     }
 
-    private void OnChassisInsertAttempt(Entity<CryoCapsuleComponent> ent, ref ChassisInsertAttemptEvent ev)
+    // todo : raise an event to check if we can insert the organs into the body also
+    private void OnChassisInsertAttempt(Entity<CryoCapsuleComponent> ent, ref CryoCapsuleChassisInstallAttemptEvent ev)
     {
-        if (_lock.IsLocked(ent.Owner))
-            return;
-
-        ev.CancelReason = "capsule must be locked";
-        ev.Cancel();
+        if (ent.Comp.ChassisSlot.HasItem)
+        {
+            ev.CancelReason = "the capsule is already inside a chassis";
+            ev.Cancel();
+        }
+        else if (_lock.IsLocked(ent.Owner))
+        {
+            ev.CancelReason = "the capsule must be locked";
+            ev.Cancel();
+        }
     }
 }

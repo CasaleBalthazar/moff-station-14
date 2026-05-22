@@ -29,19 +29,21 @@
     sprite: _Moffstation/Mobs/Species/CryogenicCapsule/chassis.rsi
     state: chassis
   - type: Pullable
+  - type: AirPurifier
+  - type: AtmosDevice
+    requireAnchored: false
+    joinSystem: true
 
   - type: CryoCapsuleChassis
     organs:
-    - OrganCryoCapsuleChassis
-    - OrganCryoCapsuleChassisArmLeft
-    - OrganCryoCapsuleChassisHandLeft
-    - OrganCryoCapsuleChassisArmRight
-    - OrganCryoCapsuleChassisHandRight
-    - OrganCryoCapsuleChassisLegLeft
-    - OrganCryoCapsuleChassisFootLeft
-    - OrganCryoCapsuleChassisLegRight
-    - OrganCryoCapsuleChassisFootRight
-
+      ArmLeft: OrganCryoCapsuleChassisArmLeft
+      ArmRight: OrganCryoCapsuleChassisArmRight
+      HandRight: OrganCryoCapsuleChassisHandRight
+      HandLeft: OrganCryoCapsuleChassisHandLeft
+      LegLeft: OrganCryoCapsuleChassisLegLeft
+      LegRight: OrganCryoCapsuleChassisLegRight
+      FootLeft: OrganCryoCapsuleChassisFootLeft
+      FootRight: OrganCryoCapsuleChassisFootRight
 
 ## organs
 - type: entity
@@ -55,15 +57,9 @@
       group: Arachnid # todo : change that
 
 - type: entity
-  parent: OrganBase
-  id: OrganCryoCapsuleChassis
-  components:
-  - type: Organ
-    category: CryoCapsuleChassis
-
-- type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseArmLeft ]
   id: OrganCryoCapsuleChassisArmLeft
+  name: cryo capsule chassis arm left
   components:
   - type: VisualOrgan
     layer: enum.HumanoidVisualLayers.LArm
@@ -74,6 +70,7 @@
 - type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseArmRight ]
   id: OrganCryoCapsuleChassisArmRight
+  name: cryo capsule chassis arm right
   components:
   - type: VisualOrgan
     layer: enum.HumanoidVisualLayers.RArm
@@ -84,6 +81,7 @@
 - type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseHandLeft ]
   id: OrganCryoCapsuleChassisHandLeft
+  name: cryo capsule chassis hand left
   components:
   - type: VisualOrgan
     layer: enum.HumanoidVisualLayers.LHand
@@ -94,6 +92,7 @@
 - type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseHandRight ]
   id: OrganCryoCapsuleChassisHandRight
+  name: cryo capsule chassis hand right
   components:
   - type: VisualOrgan
     layer: enum.HumanoidVisualLayers.RHand
@@ -104,6 +103,7 @@
 - type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseLegLeft ]
   id: OrganCryoCapsuleChassisLegLeft
+  name: cryo capsule chassis leg left
   components:
   - type: VisualOrgan
     layer: enum.HumanoidVisualLayers.LLeg
@@ -114,6 +114,7 @@
 - type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseLegRight ]
   id: OrganCryoCapsuleChassisLegRight
+  name: cryo capsule chassis leg right
   components:
   - type: VisualOrgan
     layer: enum.HumanoidVisualLayers.RLeg
@@ -124,6 +125,7 @@
 - type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseFootLeft ]
   id: OrganCryoCapsuleChassisFootLeft
+  name: cryo capsule chassis foot left
   components:
   - type: VisualOrgan
     layer: enum.HumanoidVisualLayers.LFoot
@@ -133,6 +135,7 @@
 
 - type: entity
   parent: [ OrganCryoCapsuleChassisExternal, OrganBaseFootRight ]
+  name: cryo capsule chassis foot right
   id: OrganCryoCapsuleChassisFootRight
   components:
   - type: VisualOrgan

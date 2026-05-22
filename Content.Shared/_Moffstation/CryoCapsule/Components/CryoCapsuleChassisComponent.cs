@@ -1,3 +1,5 @@
+using Content.Shared.Atmos;
+using Content.Shared.Body;
 using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -11,11 +13,14 @@ namespace Content.Shared._Moffstation.CryoCapsule.Components;
 public sealed partial class CryoCapsuleChassisComponent : Component
 {
     /// <summary>
-    /// List of organs that will be added to the mob body upon insertion.
+    /// The organs to spawn when installed, based on their category.
     /// </summary>
-    [DataField]
-    public List<EntProtoId> Organs = new();
+    [DataField(required: true)]
+    public Dictionary<ProtoId<OrganCategoryPrototype>, EntProtoId<OrganComponent>> Organs;
 
+    /// <summary>
+    /// The organs present in the host body.
+    /// </summary>
     [DataField]
     public List<EntityUid> Presents = new();
 }

@@ -81,7 +81,7 @@
 - type: entity
   parent:
   - AppearanceCryoCapsule
-  - BaseControllable
+  - BaseMob
   - MobRespirator
   - MobBloodstream
   - MobDamageable
@@ -93,9 +93,6 @@
   - type: CryoCapsule
   # feature : cannot be injected, healed by topical or defibrillator.
   - type: HealBlocker
-  # feature : can be treated via a cryogenic life support machine
-  - type: FitsInCryoLifeSupport
-
   - type: Lock
     unlockOnClick: false
   - type: AccessReader
@@ -159,17 +156,21 @@
         - Eyes
         appliedWhenAbsent: [] # todo ! StatusEffectBlindness
         appliedWhenPresent: []
-      purification: # can't treat waste without them
+      purification: # can't purify blood without them todo !
         categories:
         - Kidneys
         - Liver
         appliedWhenAbsent: [] # todo !
         appliedWhenPresent: []
-      chassis: # you don't have a mobile body without it (but can be carried !)
+      chassis: # can't move without them, can be carried
         categories:
-        - CryoCapsuleChassis
+        - LegLeft
+        - LegRight
+        - FootLeft
+        - FootRight
         appliedWhenAbsent:
         - CryoCapsuleItemStatusEffect
+        - ImmobilisedStatusEffect
         appliedWhenPresent: []
 
   # body feature : can be installed inside a cryogenic capsule chassis
@@ -245,31 +246,32 @@
     sounds:
       Unsexed: MaleSlime
 
-## States (item and mob)
+  # others
+  - type: Tag
+    tags:
+    - DoorBumpOpener
+    - FootstepSound
+
+## Mob (Capsule, test dummy)
 - type: entity
-  parent: [ StatusEffectBase ]
-  id: CryoCapsuleMobStatusEffect
+  parent: [ MobCryoCapsule ]
+  id : MobCryoCapsuleFull
+  name: Urist McOrgans
   components:
-  - type: AddParentStatusEffect
-    parents:
-    - CryoCapsuleMobState
+  - type: InitialBody
+    organs:
+      Brain: OrganHumanBrain
+      Eyes: OrganHumanEyes
+      Tongue: OrganHumanTongue
+      Appendix: OrganHumanAppendix
+      Ears: OrganHumanEars
+      Lungs: OrganHumanLungs
+      Heart: OrganHumanHeart
+      Stomach: OrganHumanStomach
+      Liver: OrganHumanLiver
+      Kidneys: OrganHumanKidneys
 
-# components added when the capsule is inside a chassis
-# and can move on its own
-- type: entity
-  abstract: true
-  parent: [ BaseMob, MobCombat, StripableInventoryBase ]
-  id: CryoCapsuleMobState
-  components:
-  - type: MobCollision
-  - type: Physics
-    bodyType: KinematicController
-  - type: InputMover
-  - type: MobMover
-  - type: MovementSpeedModifier
-  - type: LagCompensation
-
-
+## States (item)
 - type: entity
   parent: [ StatusEffectBase ]
   id: CryoCapsuleItemStatusEffect
@@ -278,11 +280,10 @@
     parents:
     - CryoCapsuleItemState
 
-# components added when the capsule is not inside a chassis
-# and can be transported
 - type: entity
   id: CryoCapsuleItemState
   components:
+  - type: FitsInCryoLifeSupport
   - type: Item
     size: Ginormous
   - type: MultiHandedItem
@@ -305,16 +306,3 @@
     soundHit:
       collection: MetalThud
   - type: CollisionWake
-  - type: GravityAffected
-  - type: Physics
-    bodyType: Dynamic
-    fixedRotation: false
-  - type: Clickable
-  - type: InteractionOutline
-  - type: MovedByPressure
-
-# Organ Types
-
-- type: organCategory
-  name: Cryogenic capsule chassis
-  id: CryoCapsuleChassis

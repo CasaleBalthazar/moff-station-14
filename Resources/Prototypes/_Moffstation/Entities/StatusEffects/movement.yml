@@ -1,0 +1,9 @@
+# completely immobilised
+- type: entity
+  parent: StatusEffectSlowdown
+  id: ImmobilisedStatusEffect
+  name: immobilised
+  components:
+  - type: MovementModStatusEffect
+    walkSpeedModifier: 0
+    sprintSpeedModifier: 0

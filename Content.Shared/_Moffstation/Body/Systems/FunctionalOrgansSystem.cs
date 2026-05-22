@@ -58,6 +58,9 @@ public sealed class FunctionalOrgansSystem : EntitySystem
 
     public void OnOrganRemoved(Entity<FunctionalOrgansComponent> ent, ref OrganRemovedFromEvent ev)
     {
+        if (Terminating(ent))
+            return;
+
         if (!TryComp<OrganComponent>(ev.Organ, out var organ) ||
             organ.Category is not { } category)
             return;

@@ -2,12 +2,12 @@ using System.Linq;
 using Content.Shared._Moffstation.Body.Components;
 using Content.Shared._Moffstation.Body.Events;
 using Content.Shared.Body;
+using Content.Shared.Chat;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.Verbs;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
-using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Body.Systems;
 
@@ -44,7 +44,7 @@ public sealed class ReachableOrgansSystem : EntitySystem
 
             ent.Comp.Organs.Add(category, organ);
 
-            if ( !ent.Comp.OrganGroups.Values.Any(group => group.Categories.Contains(category) && group.Exposed))
+            if (!ent.Comp.OrganGroups.Values.Any(group => group.Categories.Contains(category) && group.Exposed))
                 continue;
 
             var ev = new OrganGotExposedEvent(ent.Owner);

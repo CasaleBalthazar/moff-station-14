@@ -1,4 +1,3 @@
-using Content.Shared.Chat; // TO REMOVE !!
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.StatusEffectNew;
@@ -29,8 +28,6 @@ public sealed class MovementModStatusSystem : EntitySystem
     [Dependency] private readonly MovementSpeedModifierSystem _movementSpeedModifier = default!;
     [Dependency] private readonly StatusEffectsSystem _status = default!;
 
-    [Dependency] private readonly SharedChatSystem _chat = default!; // TO REMOVE !!
-
     public override void Initialize()
     {
         SubscribeLocalEvent<MovementModStatusEffectComponent, StatusEffectRemovedEvent>(OnMovementModRemoved);
@@ -55,7 +52,6 @@ public sealed class MovementModStatusSystem : EntitySystem
         ref StatusEffectRelayedEvent<RefreshMovementSpeedModifiersEvent> args
     )
     {
-        _chat.DispatchGlobalAnnouncement("modified speed : " + entity.Comp.WalkSpeedModifier + " " + entity.Comp.SprintSpeedModifier);
         args.Args.ModifySpeed(entity.Comp.WalkSpeedModifier, entity.Comp.SprintSpeedModifier);
     }
 

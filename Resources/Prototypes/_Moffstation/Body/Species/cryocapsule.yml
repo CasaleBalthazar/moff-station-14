@@ -89,19 +89,14 @@
   name: cryogenic capsule
   description: a miniature cryo-pod able to keep organs alive in absence of a body.
   components:
-
   - type: CryoCapsule
-  # feature : cannot be injected, healed by topical or defibrillator.
-  - type: HealBlocker
+  - type: HealBlocker # can't be injected, healed with topical or awaken via defibrillator.
   - type: Lock
     unlockOnClick: false
   - type: AccessReader
     accessLists: [ "Medical" ]
-
-  # body profile
   - type: Body
-  # body feature : internal organs can be seen
-  - type: DisplayableOrgans
+  - type: DisplayableOrgans # internal organs can be seen
     organGroups:
       capsule:
         displayed: true
@@ -116,8 +111,7 @@
         - Liver
         - Kidneys
         - Appendix
-  # body feature : internal organs can be placed and removed (when unlocked)
-  - type: ReachableOrgans
+  - type: ReachableOrgans # internal organs can be placed and removed (when unlocked)
     insertSound: /Audio/Voice/Slime/slime_squish.ogg
     ejectSound: /Audio/Voice/Slime/slime_squish.ogg
     organGroups:
@@ -134,8 +128,7 @@
         - Liver
         - Kidneys
         - Appendix
-  # body feature : presence / absence of organs affect body functions
-  - type: FunctionalOrgans
+  - type: FunctionalOrgans # presence / absence of organs affect body functions
     organGroups:
       vitals: # can't live without them
         categories:
@@ -162,7 +155,7 @@
         - Liver
         appliedWhenAbsent: [] # todo !
         appliedWhenPresent: []
-      chassis: # can't move without them, can be carried
+      legs: # can't move without them, can be carried
         categories:
         - LegLeft
         - LegRight
@@ -170,8 +163,8 @@
         - FootRight
         appliedWhenAbsent:
         - CryoCapsuleItemStatusEffect
-        - ImmobilisedStatusEffect
-        appliedWhenPresent: []
+        appliedWhenPresent:
+        - CryoCapsuleChassisStatusEffect
 
   # body feature : can be installed inside a cryogenic capsule chassis
   - type: ContainerContainer
@@ -247,10 +240,30 @@
       Unsexed: MaleSlime
 
   # others
+  - type: Hunger
+  - type: Thirst
   - type: Tag
     tags:
     - DoorBumpOpener
     - FootstepSound
+    - CanPilot
+  - type: Inventory
+    templateId: cryocapsule
+  - type: InventorySlots
+  - type: Strippable
+  - type: UserInterface # necessary for Strippable user interface
+    interfaces:
+      enum.StrippingUiKey.Key:
+        type: StrippableBoundUserInterface
+  - type: MovementSpeedModifier
+  - type: StatusIcon
+    bounds: -0.5,-0.5,0.5,0.5
+  - type: JobStatus
+  - type: IdExaminable
+  - type: Buckle
+  - type: Hands
+  - type: ComplexInteraction
+  - type: SSDIndicator
 
 ## Mob (Capsule, test dummy)
 - type: entity
@@ -282,7 +295,9 @@
 
 - type: entity
   id: CryoCapsuleItemState
+  categories: [ HideSpawnMenu ]
   components:
+  - type: BlockMovement
   - type: FitsInCryoLifeSupport
   - type: Item
     size: Ginormous
@@ -306,3 +321,31 @@
     soundHit:
       collection: MetalThud
   - type: CollisionWake
+
+## States (mobile)
+- type: entity
+  parent: [ StatusEffectBase ]
+  id: CryoCapsuleChassisStatusEffect
+  components:
+  - type: AddParentStatusEffect
+    parents:
+    - CryoCapsuleChassisState
+
+- type: entity
+  id: CryoCapsuleChassisState
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: StandingState
+  - type: BodyEmotes
+    soundsId: GeneralBodyEmotes
+  - type: CombatMode
+    canDisarm: true
+  - type: MeleeWeapon
+    soundHit:
+      collection: Punch
+    angle: 30
+    animation: WeaponArcFist
+    attackRate: 1
+    damage:
+      types:
+        Blunt: 5

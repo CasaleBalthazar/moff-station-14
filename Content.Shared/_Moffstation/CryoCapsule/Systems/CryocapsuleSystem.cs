@@ -53,7 +53,7 @@ public abstract class SharedCryoCapsuleSystem : EntitySystem
             ev.CancelReason = "the capsule is already inside a chassis";
             ev.Cancel();
         }
-        else if (_lock.IsLocked(ent.Owner))
+        else if (! _lock.IsLocked(ent.Owner))
         {
             ev.CancelReason = "the capsule must be locked";
             ev.Cancel();

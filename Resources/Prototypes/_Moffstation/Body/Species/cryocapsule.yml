@@ -188,6 +188,16 @@
     bloodRefreshAmount: 0   # body don't produce Cryoformol naturally
 
   # damage profile
+  - type: Repairable
+    bloodlossModifier: -10 # stop bleeding
+    damage: # same as a bruise pack
+      types:
+        Blunt: -5
+        Piercing: -5
+        Slash: -5
+    doAfterDelay: 2
+    fuelCost: 0.5
+
   - type: Damageable # your capsule is made of glass
     damageContainer: Biological
     damageModifierSet: Glass

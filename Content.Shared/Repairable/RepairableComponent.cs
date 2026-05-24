@@ -67,4 +67,14 @@ public sealed partial class RepairableComponent : Component
     /// </summary>
     [DataField, AutoNetworkedField]
     public bool AllowSelfRepair = true;
+
+    // Moffstation - Begin
+
+    /// <summary>
+    /// Amount of bloodloss delt by repairs if applicable (should be negative)
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float BloodlossModifier = 0.0f;
+
+    // Moffstation - End
 }

@@ -154,6 +154,11 @@ public sealed class MetabolizerSystem : EntitySystem
 
         var isDead = _mobStateSystem.IsDead(solutionOwner.Value);
 
+        // Moffstation - Begin
+        var deadEv = new GetMetabolicStageDeadEvent(stage);
+        RaiseLocalEvent(solutionOwner.Value, ref deadEv);
+        // Moffstation - end
+
         int reagents = 0;
         foreach (var (reagent, quantity) in list)
         {
@@ -197,7 +202,7 @@ public sealed class MetabolizerSystem : EntitySystem
             // if it's possible for them to be dead, and they are,
             // then we shouldn't process any effects, but should probably
             // still remove reagents
-            if (isDead && !proto.WorksOnTheDead)
+            if (isDead && !proto.WorksOnTheDead && !deadEv.Active) // Moffstation
                 continue;
 
             var actualEntity = ent.Comp2?.Body ?? solutionOwner.Value;

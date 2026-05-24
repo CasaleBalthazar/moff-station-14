@@ -1,3 +1,6 @@
+using Content.Shared.Metabolism;
+using Robust.Shared.Prototypes; // Moffstation
+
 namespace Content.Shared.Body.Events;
 
 /// <summary>
@@ -24,3 +27,19 @@ public readonly record struct ApplyMetabolicMultiplierEvent(float Multiplier)
     /// </summary>
     public readonly float Multiplier = Multiplier;
 }
+
+
+// Moffstation - Begin
+
+/// <summary>
+/// Raised on an entity to determine if this metabolic stage is active while they are dead.
+/// </summary>
+[ByRefEvent]
+public record struct GetMetabolicStageDeadEvent(ProtoId<MetabolismStagePrototype> MetabolismStage)
+{
+    public readonly ProtoId<MetabolismStagePrototype> MetabolismStage = MetabolismStage;
+    public bool Active = false;
+}
+
+
+// Moffstation - End

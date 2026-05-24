@@ -1,4 +1,6 @@
 using Content.Shared.Administration.Logs;
+using Content.Shared.Body.Components; // Moffstation
+using Content.Shared.Body.Systems; // Moffstation
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
@@ -16,6 +18,7 @@ public sealed partial class RepairableSystem : EntitySystem
     [Dependency] private readonly DamageableSystem _damageableSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly SharedBloodstreamSystem _bloodstreamSystem = default!; // Moffstation
 
     public override void Initialize()
     {
@@ -41,6 +44,8 @@ public sealed partial class RepairableSystem : EntitySystem
             RepairSomeDamage((ent, damageable), ent.Comp.Damage, args.User);
         else
             RepairAllDamage((ent, damageable), args.User);
+
+        RepairBloodloss(ent, ent.Comp.BloodlossModifier); // Moffstation
 
         totalDamage = _damageableSystem.GetTotalDamage((ent.Owner, damageable));
 
@@ -118,6 +123,17 @@ public sealed partial class RepairableSystem : EntitySystem
         // Run the repairing doafter
         args.Handled = _toolSystem.UseTool(args.Used, args.User, ent.Owner, delay, ent.Comp.QualityNeeded, new RepairDoAfterEvent(), ent.Comp.FuelCost);
     }
+
+    // Moffstation - Begin
+    private void RepairBloodloss(Entity<RepairableComponent> ent, float amount)
+    {
+        if (!TryComp<BloodstreamComponent>(ent.Owner, out var bloodstream) || amount == 0)
+            return;
+
+        var isBleeding = bloodstream.BleedAmount > 0;
+        _bloodstreamSystem.TryModifyBleedAmount((ent.Owner, bloodstream), amount);
+    }
+    // Moffstation - End
 }
 
 /// <summary>

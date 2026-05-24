@@ -1,12 +1,17 @@
 using Content.Shared._Moffstation.CryoCapsule.Components;
 using Content.Shared.Audio;
+using Content.Shared.Body.Events;
+using Content.Shared.Chemistry.Components;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage.Systems;
+using Content.Shared.FixedPoint;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Power;
 using Content.Shared.Power.EntitySystems;
+using Content.Shared.Stacks;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
 
@@ -25,6 +30,7 @@ public abstract class SharedCryoLifeSupportSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly SharedSolutionContainerSystem _solutions = default!;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -34,6 +40,9 @@ public abstract class SharedCryoLifeSupportSystem : EntitySystem
         SubscribeLocalEvent<CryoLifeSupportComponent, EntInsertedIntoContainerMessage>(OnEntInserted);
         SubscribeLocalEvent<CryoLifeSupportComponent, EntRemovedFromContainerMessage>(OnEntRemoved);
         SubscribeLocalEvent<CryoLifeSupportComponent, PowerChangedEvent>(OnPowerChanged);
+
+        // activate all metabolic stage even when dead
+        SubscribeLocalEvent<InsideCryoLifeSupportComponent, GetMetabolicStageDeadEvent>(OnGetMetabolicStageDead);
 
         Subs.BuiEvents<CryoLifeSupportComponent>(CryoLifeSupportUiKey.Key, subs =>
             {
@@ -59,6 +68,8 @@ public abstract class SharedCryoLifeSupportSystem : EntitySystem
 
         _ambientSound.SetAmbience(ent, true);
         _ambientLight.SetEnabled(ent, true);
+
+        AddComp<InsideCryoLifeSupportComponent>(msg.Entity);
     }
 
     private void OnEntRemoved(Entity<CryoLifeSupportComponent> ent, ref EntRemovedFromContainerMessage msg)
@@ -69,6 +80,8 @@ public abstract class SharedCryoLifeSupportSystem : EntitySystem
 
         _ambientSound.SetAmbience(ent, false);
         _ambientLight.SetEnabled(ent, false);
+
+        RemComp<InsideCryoLifeSupportComponent>(msg.Entity);
     }
 
     private void OnPowerChanged(Entity<CryoLifeSupportComponent> ent, ref PowerChangedEvent ev)
@@ -76,6 +89,19 @@ public abstract class SharedCryoLifeSupportSystem : EntitySystem
         var active = ev.Powered && ent.Comp.CapsuleSlot.Item is not null;
         _ambientSound.SetAmbience(ent, active);
         _ambientLight.SetEnabled(ent, active);
+
+        if (ent.Comp.CapsuleSlot.Item is not { } patient)
+            return;
+
+        if (ev.Powered)
+            AddComp<InsideCryoLifeSupportComponent>(patient);
+        else
+            RemComp<InsideCryoLifeSupportComponent>(patient);
+    }
+
+    private void OnGetMetabolicStageDead(Entity<InsideCryoLifeSupportComponent> ent, ref GetMetabolicStageDeadEvent ev)
+    {
+        ev.Active = true;
     }
 
     private void OnSimpleUiMessage(Entity<CryoLifeSupportComponent> ent, ref CryoLifeSupportSimpleUiMessage msg)
@@ -98,7 +124,8 @@ public abstract class SharedCryoLifeSupportSystem : EntitySystem
 
     private void OnInjectionUiMessage(Entity<CryoLifeSupportComponent> ent, ref CryoLifeSupportInjectionUiMessage msg)
     {
-
+        if (TryInject(ent, msg.Amount))
+            _audio.PlayPredicted(ent.Comp.InjectSound, ent, msg.Actor);
     }
 
     # region private methods
@@ -130,6 +157,31 @@ public abstract class SharedCryoLifeSupportSystem : EntitySystem
         }
 
         _audio.PlayPredicted(ent.Comp.ZapSound, ent, ent);
+
+        return true;
+    }
+
+
+    private bool TryInject(Entity<CryoLifeSupportComponent> ent, FixedPoint2 amount)
+    {
+        if (ent.Comp.BeakerSlot.Item is not { } beaker ||
+            ! _solutions.TryGetFitsInDispenser(beaker, out var beakerSol, out var bSol) ||
+            ent.Comp.CapsuleSlot.Item is not { } capsule ||
+            ! _solutions.TryGetInjectableSolution(capsule, out var targetSol, out var tSol))
+            return false;
+
+        var transferedAmount = FixedPoint2.Min(tSol.AvailableVolume, FixedPoint2.Min(bSol.Volume, amount));
+
+        if (transferedAmount <= FixedPoint2.Zero)
+            return false;
+
+        Solution removedSolution;
+        if (TryComp<StackComponent>(capsule, out var stack))
+            removedSolution = _solutions.SplitStackSolution(beakerSol.Value, transferedAmount, stack.Count);
+        else
+            removedSolution = _solutions.SplitSolution(beakerSol.Value, transferedAmount);
+
+        _solutions.Inject(capsule, targetSol.Value, removedSolution);
 
         return true;
     }
